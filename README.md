@@ -37,7 +37,7 @@ I personally use the KDE suite of applications, but this can easily be substitut
 
 Since this setup is intended for use with alpine, it does not rely on `systemd` or `elogind`. Therefore, in order to keep `polkit` and `dbus` working, I launch river with a combination of `consolekit` and `dbus-launch`. If you use a `systemd` distro or use `elogind`, this may be different.
 
-For the same reason, I use seatd for seat management. For this to work, the `seatd` system service must be running, and the user must be part of the `seat` group
+For the same reason, I use `seatd` for seat management. For this to work, the `seatd` system service must be running, and the user must be part of the `seat` group
 
 ## Screenshots
 
