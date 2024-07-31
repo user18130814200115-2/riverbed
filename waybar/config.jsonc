@@ -1,0 +1,73 @@
+{
+    "layer": "top",
+	"mode": "overlay",
+	"height": 48,
+	"spacing": 10,
+	"margin": 10,
+	"modules-left": ["river/tags"],
+	"modules-center": ["clock"],
+    "modules-right": ["bluetooth", "pulseaudio", "network", "battery"],
+
+	"bluetooth": {
+	"format": " ",
+	"format-off": "󰂲 ",
+	"format-connected": "󰂱 ",
+	"tooltip-format": "{controller_alias}\t{controller_address}",
+	"tooltip-format-connected": "{controller_alias}\t{controller_address}\n\n{device_enumerate}",
+	"tooltip-format-enumerate-connected": "{device_alias}\t{device_address}"
+	},
+
+	"pulseaudio": {
+        "format": "{icon}",
+        "format-muted": " ",
+        "format-icons": {
+            "default": [
+                " ",
+                " ",
+                " "
+            ]
+        }
+    },
+
+	"river/tags": {
+		"num-tags": 5
+	},
+    "clock": {
+        "format-alt": "{:%a, %d. %b  %H:%M}"
+    },
+	"network": {
+        "format-wifi": " {icon}",
+        "format-ethernet": "  ",
+        "format-disconnected": "󰌙",
+        "format-icons": [
+            "󰤯 ",
+            "󰤟 ",
+            "󰤢 ",
+            "󰤢 ",
+            "󰤨 "
+        ]
+    },
+    "battery": {
+        "states": {
+            "good": 95,
+            "warning": 30,
+            "critical": 20
+        },
+        "format": "{icon} {capacity}%",
+        "format-charging": " {capacity}%",
+        "format-plugged": " {capacity}%",
+        "format-icons": [
+            "󰂎",
+            "󰁺",
+            "󰁻",
+            "󰁼",
+            "󰁽",
+            "󰁾",
+            "󰁿",
+            "󰂀",
+            "󰂁",
+            "󰂂",
+            "󰁹"
+        ]
+    }
+}

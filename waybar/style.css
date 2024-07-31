@@ -1,0 +1,49 @@
+* {
+	font-family: JetBrainsMono Nerd Font;
+}
+
+
+window#waybar {
+	background: transparent;
+	color: black;
+}
+
+.modules-left{
+	background: white;
+	margin-left: 1144px;
+	border-top: solid black 2px;
+	border-bottom: solid black 2px;
+	border-left: solid black 2px;
+	min-width: 351px;
+}
+
+.modules-center{
+	background: white;
+	border-top: solid black 2px;
+	border-bottom: solid black 2px;
+}
+
+.modules-right{
+	background: white;
+	border-top: solid black 2px;
+	border-bottom: solid black 2px;
+	border-right: solid black 2px;
+	padding-right: 10px;
+	min-width: 351px;
+}
+
+#tags button{
+	color: white
+}
+
+#tags button.focused {
+	color: black
+}
+
+#tags {
+	margin-left:0;
+}
+
+#bluetooth.off {
+	color: grey;
+}

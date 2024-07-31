@@ -1,0 +1,74 @@
+#!/bin/sh
+
+
+
+# Keybindings
+
+riverctl map normal Super Return spawn konsole
+riverctl map normal Super Space spawn 'j4-dmenu-desktop --no-generic --dmenu=tofi'
+riverctl map normal Super+Shift Space spawn 'echo | tofi | sh'
+
+
+riverctl map normal Super+Shift q close
+riverctl map normal Super+Shift Return zoom
+
+riverctl map normal Super+Shift Down swap next
+riverctl map normal Super+Shift Up swap previous
+
+riverctl map normal Super Down focus-view next
+riverctl map normal Super Up focus-view previous
+
+riverctl map-pointer normal Super BTN_LEFT move-view
+riverctl map normal Super F toggle-fullscreen
+riverctl map normal Super+Shift f toggle-float
+
+## F-Keys
+
+riverctl map normal None Print spawn 'rimshot save area ~/Pictures/Screenshots/$(date +%d-%m-%y-%H:%M).jpg'
+
+for mode in normal locked
+do
+	riverctl map $mode None XF86MonBrightnessUp   spawn 'brightnessctl set +5%'
+	riverctl map $mode None XF86MonBrightnessDown spawn 'brightnessctl set 5%-'
+
+	riverctl map $mdoe None XF86AudioRaiseVolume spawn 'amixer -D pulse sset Master 5%+'
+	riverctl map $mode None XF86AudioLowerVolume spawn 'amixer -D pulse sset Master 5%-'
+	riverctl map $mode None XF86AudioMute        spawn 'amixer -D pulse set Master 1+ toggle'
+done
+
+
+for i in $(seq 1 9)
+do
+	tags=$((1 << ($i -1)))
+	riverctl map normal Super $i set-focused-tags $tags
+	riverctl map normal Super+Shift $i set-view-tags $tags
+done
+
+
+# Visuals
+riverctl background-color 0xeeeeee
+riverctl border-color-focused 0x000000
+riverctl border-color-unfocused 0xffffff
+riverctl xcursor-theme capitaine-cursors-dark
+
+# Input
+riverctl set-repeat 40 300
+riverctl hide-cursor when-typing enabled
+riverctl focus-follows-cursor always
+riverctl set-cursor-warp on-focus-change
+
+riverctl input pointer-9610-30-Pine64_Pinebook_Pro_Touchpad tap enabled
+riverctl input pointer-9610-30-Pine64_Pinebook_Pro_Touchpad natural-scroll enabled
+
+riverctl keyboard-layout -options compose:caps us
+
+# Startup applications
+
+riverctl spawn mako
+riverctl spawn waybar
+riverctl spawn lxqt-policykit-agent
+
+# Layout
+riverctl default-attach-mode bottom
+riverctl default-layout luatile
+river-luatile &
