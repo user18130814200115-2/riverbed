@@ -24,7 +24,7 @@ riverctl map normal Super+Shift f toggle-float
 
 ## F-Keys
 
-riverctl map normal None Print spawn 'rimshot save area ~/Pictures/Screenshots/$(date +%d-%m-%y-%H:%M).jpg'
+riverctl map normal None Print spawn 'rimshot save area ~/Pictures/Screenshots/$(date +%d-%m-%y-%H:%M).png'
 
 for mode in normal locked
 do
