@@ -43,3 +43,7 @@ window#waybar {
 #tags {
 	margin-left:0;
 }
+
+#bluetooth.off {
+	color: grey;
+}

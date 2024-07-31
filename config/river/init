@@ -24,7 +24,7 @@ riverctl map normal Super+Shift f toggle-float
 
 ## F-Keys
 
-riverctl map normal None Print spawn 'grimshot save area'
+riverctl map normal None Print spawn 'rimshot save area ~/Pictures/Screenshots/$(date +%d-%m-%y-%H:%M).jpg'
 
 for mode in normal locked
 do
@@ -46,7 +46,7 @@ done
 
 
 # Visuals
-riverctl background-color 0xffffff
+riverctl background-color 0xeeeeee
 riverctl border-color-focused 0x000000
 riverctl border-color-unfocused 0xffffff
 riverctl xcursor-theme capitaine-cursors-dark
@@ -66,7 +66,9 @@ riverctl keyboard-layout -options compose:caps us
 
 riverctl spawn mako
 riverctl spawn waybar
-riverctl spawn /usr/bin/lxqt-policykit-agent
+riverctl spawn lxqt-policykit-agent
 
+# Layout
+riverctl default-attach-mode bottom
 riverctl default-layout luatile
 river-luatile &
