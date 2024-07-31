@@ -15,7 +15,7 @@ You Should **ADD** the contents of etc/apk/world to your existing apk world file
 **DO NOT REPLACE THE FILE OR YOU MAY BREAK YOUR INSTALL**.
 The file in this repository does not contain a Linux kernel, network divers, etcetera.
 
-## Programs
+### Programs
 
 Riverbed uses the following programs
 | program | Purpose |
@@ -32,12 +32,17 @@ Riverbed uses the following programs
 
 I personally use the KDE suite of applications, but this can easily be substituted by wither GNOME or diagnostic applications.
 
-
-## Alpine-specific
+### Alpine-specific
 
 Since this setup is intended for use with alpine, it does not rely on `systemd` or `elogind`. Therefore, in order to keep `polkit` and `dbus` working, I launch river with a combination of `consolekit` and `dbus-launch`. If you use a `systemd` distro or use `elogind`, this may be different.
 
 For the same reason, I use `seatd` for seat management. For this to work, the `seatd` system service must be running, and the user must be part of the `seat` group
+
+## Window layout
+
+Riverbed uses a custom layout I call runoff. It is a simple master-stack layout which always reserves space for the stack, even if there is only one window in screen. It also reserves space for the bar which only takes up around 40% of the screen width.
+
+Settings regarding the layout can be changed by editing the river-laurile config, though one must then also change the configs for tofi and waybar to match.
 
 ## Screenshots
 
