@@ -45,8 +45,17 @@ Riverbed uses a custom layout I call runoff. It is a simple master-stack layout 
 Settings regarding the layout can be changed by editing the river-laurile config, though one must then also change the configs for tofi and waybar to match.
 
 ## Screenshots
+### Fullscrenn
+![full](screenshots/full.png)
 
-`Coming Soon`
+### The stack sapce is always avaiable
+![runoff](screenshots/runoff.png)
+
+### The Bar, taking up 40% of the screen
+![bar](screenshots/bar.png)
+
+### The launcher overlaps with the bar and uses the same theming
+![launcher](screenshots/launcher.png)
 
 ## Hacks
 
