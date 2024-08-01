@@ -1,3 +1,5 @@
+@define-color bg #ffffff;
+
 * {
 	all: unset;
 	font-family: JetBrainsMono Nerd Font;
@@ -10,7 +12,7 @@ window#waybar {
 }
 
 .modules-left{
-	background: white;
+	background: @bg;
 	margin-left: 1144px;
 	border-top: solid black 2px;
 	border-bottom: solid black 2px;
@@ -19,13 +21,13 @@ window#waybar {
 }
 
 .modules-center{
-	background: white;
+	background: @bg;
 	border-top: solid black 2px;
 	border-bottom: solid black 2px;
 }
 
 .modules-right{
-	background: white;
+	background: @bg;
 	border-top: solid black 2px;
 	border-bottom: solid black 2px;
 	border-right: solid black 2px;
@@ -44,4 +46,19 @@ window#waybar {
 
 #bluetooth.off {
 	color: grey;
+}
+
+#battery.warning {
+	color: orange;
+}
+#battery.critical {
+	color: red;
+}
+window#waybar.battery-critical {
+	animation: blinker 1s linear infinite;
+}
+@keyframes blinker {
+  50% {
+    opacity: 0;
+  }
 }
