@@ -25,7 +25,7 @@ Riverbed uses the following programs
 | way bar | Status bar |
 | tofi | Launcher |
 | mako | Notifications |
-| brightness | Brightness management |
+| brightnessctl | Brightness management |
 | lxqt-policykit | GUI Privilege escalation |
 | grim shot | Screenshots |
 | doas | CLI privilege escalation |
