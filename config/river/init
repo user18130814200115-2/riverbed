@@ -71,6 +71,10 @@ riverctl spawn mako
 riverctl spawn waybar
 riverctl spawn lxqt-policykit-agent
 
+## Mitigate Pinebook Pro Audio Issues
+
+riverctl spawn 'aplay -r 8000 -f S16_LE /dev/zero'
+
 # Layout
 riverctl default-attach-mode bottom
 riverctl default-layout luatile
