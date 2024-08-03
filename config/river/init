@@ -24,16 +24,19 @@ riverctl map normal Super+Shift f toggle-float
 
 ## F-Keys
 
-riverctl map normal None Print spawn 'rimshot save area ~/Pictures/Screenshots/$(date +%d-%m-%y-%H:%M).jpg'
+riverctl map normal None Print spawn 'rimshot save area ~/Pictures/Screenshots/$(date +%d-%m-%y-%H:%M).png'
 
 for mode in normal locked
 do
 	riverctl map $mode None XF86MonBrightnessUp   spawn 'brightnessctl set +5%'
 	riverctl map $mode None XF86MonBrightnessDown spawn 'brightnessctl set 5%-'
 
-	riverctl map $mdoe None XF86AudioRaiseVolume spawn 'amixer -D pulse sset Master 5%+'
+	riverctl map $mode None XF86AudioRaiseVolume spawn 'amixer -D pulse sset Master 5%+'
 	riverctl map $mode None XF86AudioLowerVolume spawn 'amixer -D pulse sset Master 5%-'
 	riverctl map $mode None XF86AudioMute        spawn 'amixer -D pulse set Master 1+ toggle'
+	riverctl map-switch $mode lid close spawn 'wlr-randr --output eDP-1 --off'
+    riverctl map-switch $mode lid open spawn 'wlr-randr --output eDP-1 --on'
+
 done
 
 
@@ -67,6 +70,10 @@ riverctl keyboard-layout -options compose:caps us
 riverctl spawn mako
 riverctl spawn waybar
 riverctl spawn lxqt-policykit-agent
+
+## Mitigate Pinebook Pro Audio Issues
+
+riverctl spawn 'aplay -r 8000 -f S16_LE /dev/zero'
 
 # Layout
 riverctl default-attach-mode bottom
