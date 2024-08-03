@@ -60,5 +60,5 @@ Settings regarding the layout can be changed by editing the river-laurile config
 
 ## Hacks
 
-The current way bar config is a bit of a hack, using a transparent bar with a wide left-side margin to get a partial bar.
+The current waybar config is a bit of a hack, using a transparent bar with a wide left-side margin to get a partial bar.
 I am working on a patch for way bar that allows one to set a smaller bar anchored to a corner to alleviate this problem.
