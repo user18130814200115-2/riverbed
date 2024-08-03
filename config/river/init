@@ -31,7 +31,7 @@ do
 	riverctl map $mode None XF86MonBrightnessUp   spawn 'brightnessctl set +5%'
 	riverctl map $mode None XF86MonBrightnessDown spawn 'brightnessctl set 5%-'
 
-	riverctl map $mdoe None XF86AudioRaiseVolume spawn 'amixer -D pulse sset Master 5%+'
+	riverctl map $mode None XF86AudioRaiseVolume spawn 'amixer -D pulse sset Master 5%+'
 	riverctl map $mode None XF86AudioLowerVolume spawn 'amixer -D pulse sset Master 5%-'
 	riverctl map $mode None XF86AudioMute        spawn 'amixer -D pulse set Master 1+ toggle'
 done
