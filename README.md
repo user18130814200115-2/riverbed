@@ -27,7 +27,7 @@ Riverbed uses the following programs
 | mako | Notifications |
 | brightnessctl | Brightness management |
 | lxqt-policykit | GUI Privilege escalation |
-| grim shot | Screenshots |
+| grimshot | Screenshots |
 | doas | CLI privilege escalation |
 
 I personally use the KDE suite of applications, but this can easily be substituted by wither GNOME or diagnostic applications.
