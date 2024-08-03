@@ -29,6 +29,7 @@ Riverbed uses the following programs
 | lxqt-policykit | GUI Privilege escalation |
 | grimshot | Screenshots |
 | doas | CLI privilege escalation |
+| pass | Password and OTP manager |
 
 I personally use the KDE suite of applications, but this can easily be substituted by wither GNOME or diagnostic applications.
 
