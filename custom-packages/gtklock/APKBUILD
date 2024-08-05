@@ -1,0 +1,33 @@
+# Contributor: Edd Salkield <edd@salkield.uk>
+# Maintainer: Edd Salkield <edd@salkield.uk>
+pkgname=gtklock
+pkgver=3.0.0
+pkgrel=0
+pkgdesc="GTK-based lockscreen for Wayland"
+url="https://github.com/jovanlanik/gtklock"
+arch="all"
+license="GPL-3.0-only"
+makedepends="linux-pam-dev glib-dev gtk-layer-shell-dev gtk+3.0-dev wayland-dev scdoc meson"
+depends="pam wayland gtk+3.0 gtk-session-lock"
+subpackages="$pkgname-doc"
+source="https://github.com/jovanlanik/gtklock/archive/v$pkgver/gtklock-v$pkgver.tar.gz"
+options="!check"	# no upstream tests
+
+build() { 
+    abuild-meson output 
+    meson compile -C output 
+} 
+ 
+check() { 
+    meson test --no-rebuild --print-errorlogs -C output 
+} 
+ 
+package() { 
+    DESTDIR="$pkgdir" meson install --no-rebuild -C output 
+} 
+
+
+
+sha512sums="
+01c3d4eea155c1d8472f191af5ab6c66509cd7bd3c4b9b7beb1c50005d6015d977474d85e0da5a307e8a6a970456a89ef1b86fb5b218a7943ebc57f710bf534b  gtklock-v3.0.0.tar.gz
+"

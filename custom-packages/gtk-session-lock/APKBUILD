@@ -1,0 +1,33 @@
+# Contributor: Thijs Iris Wester <wester.t@protonmail.com> 
+# Maintainer: Thijs Iris Wester <wester.t@protonmail.com>
+pkgname=gtk-session-lock
+pkgver=0.2.0
+pkgrel=0
+pkgdesc="GTK library to use ext-session-lock-v1"
+url="https://github.com/Cu3PO42/gtk-session-lock"
+arch="all"
+license="GPL-3.0-only"
+makedepends="meson wayland-dev gtk+3.0-dev gobject-introspection gobject-introspection-dev vala"
+depends=""
+subpackages=""
+source="https://github.com/Cu3PO42/gtk-session-lock/archive/refs/tags/v$pkgver.zip"
+options="!check"	# no upstream tests
+
+build() {
+    abuild-meson\
+        . output
+    meson compile -C output
+}
+
+check() {
+    meson test --no-rebuild --print-errorlogs -C output
+}
+
+package() {
+    DESTDIR="$pkgdir" meson install --no-rebuild -C output
+}
+
+
+sha512sums="
+f4407313f1244c178a618b356643673a934a7d8d8ffc32817495247c35af96dfbeae899de4ef16d767ea4bbccc7599ad08dc3d886f7caef9f90f1cdc9477dd69  v0.2.0.zip
+"
