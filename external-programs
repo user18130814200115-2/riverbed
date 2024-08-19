@@ -1,9 +1,0 @@
-cargo install riverluatile --locked 
- 
-# Depends 
-luajit 
- 
-# MakeDepends 
-cargo 
-luajit-dev 
-
