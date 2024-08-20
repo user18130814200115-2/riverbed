@@ -77,7 +77,7 @@ riverctl map normal Super+Shift 0 set-view-tags $all_tags
 
 # Visuals
 riverctl background-color 0xeeeeee
-riverctl spawn "swaybg -i $HOME/Pictures/background.png"
+riverctl spawn "wbg $HOME/Pictures/background.png"
 riverctl border-color-focused 0x000000
 riverctl border-color-unfocused 0xffffff
 riverctl xcursor-theme capitaine-cursors-dark
