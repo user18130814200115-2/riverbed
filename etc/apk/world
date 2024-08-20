@@ -4,7 +4,7 @@ river
 mkrundir
 waybar
 tofi
-mako
+fnott
 j4-dmenu-desktop
 brightnessctl
 falkon
@@ -17,3 +17,4 @@ pass-otp
 seatd-launch
 wob
 wbg
+

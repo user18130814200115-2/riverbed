@@ -29,7 +29,7 @@ Riverbed uses the following programs
 | river-luatile | Layout Manager |
 | way bar | Status bar |
 | tofi | Launcher |
-| mako | Notifications |
+| fnott | Notifications |
 | brightnessctl | Brightness management |
 | lxqt-policykit | GUI Privilege escalation |
 | grimshot | Screenshots |
