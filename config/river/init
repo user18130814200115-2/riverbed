@@ -48,12 +48,12 @@ riverctl map normal None XF86Sleep spawn 'gtklock'
 
 for mode in normal locked
 do
-	riverctl map $mode None XF86MonBrightnessUp   spawn "brightnessctl set +5% $wobBrightness"
-	riverctl map $mode None XF86MonBrightnessDown spawn "brightnessctl set 5%- $wobBrightness"
+	riverctl map $mode None XF86MonBrightnessUp   spawn "brightnessctl set +1% $wobBrightness"
+	riverctl map $mode None XF86MonBrightnessDown spawn "brightnessctl set 1%- $wobBrightness"
 
 
-	riverctl map $mode None XF86AudioRaiseVolume spawn "amixer -D pulse sset Master 5%+ $wobVolume"
-	riverctl map $mode None XF86AudioLowerVolume spawn "amixer -D pulse sset Master 5%- $wobVolume"
+	riverctl map $mode None XF86AudioRaiseVolume spawn "amixer -D pulse sset Master 1%+ $wobVolume"
+	riverctl map $mode None XF86AudioLowerVolume spawn "amixer -D pulse sset Master 1%- $wobVolume"
 	riverctl map $mode None XF86AudioMute        spawn 'amixer -D pulse set Master 1+ toggle'
 
 	riverctl map-switch $mode lid close spawn 'wlr-randr --output eDP-1 --off'
