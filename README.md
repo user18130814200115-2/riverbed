@@ -79,17 +79,24 @@ configuration, though one must then also change the configuration files for
 `tofi` and `waybar` to match.
 
 ## Screenshots
-### Fullscrenn
-![full](screenshots/full.png)
+
+### No windows
+![empty](pictures/empty.png)
+
+### Full screen
+![full](pictures/full.png)
 
 ### The stack space is always available
-![runoff](screenshots/runoff.png)
+![runoff](pictures/runoff.png)
 
 ### The Bar, taking up 40% of the screen
-![bar](screenshots/bar.png)
+![bar](pictures/bar.png)
 
 ### The launcher overlaps with the bar and uses the same theming
-![launcher](screenshots/launcher.png)
+![launcher](pictures/launcher.png)
+
+### So does the osd for brightness and volume
+![launcher](pictures/osd.png)
 
 ## Hacks
 
