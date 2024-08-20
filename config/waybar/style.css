@@ -17,7 +17,7 @@ window#waybar {
 	border-top: solid black 2px;
 	border-bottom: solid black 2px;
 	border-left: solid black 2px;
-	min-width: 351px;
+	min-width: 348px;
 }
 
 .modules-center{
@@ -32,11 +32,11 @@ window#waybar {
 	border-bottom: solid black 2px;
 	border-right: solid black 2px;
 	padding-right: 10px;
-	min-width: 351px;
+	min-width: 350px;
 }
 
 #tags button{
-	color: white;
+	color: transparent;
 	padding-left: 10px
 }
 
@@ -50,15 +50,17 @@ window#waybar {
 
 #battery.warning {
 	color: orange;
+	animation: blinker 1s linear 5;
 }
 #battery.critical {
 	color: red;
+	animation: blinker 1s linear 25;
 }
-window#waybar.battery-critical {
-	animation: blinker 1s linear infinite;
+window#waybar.battery-critical .modules-right,window#waybar.battery-critical .modules-center, window#waybar.battery-critical .modules-left {
+	border-color: red;
 }
 @keyframes blinker {
   50% {
-    opacity: 0;
+    color: transparent;
   }
 }
