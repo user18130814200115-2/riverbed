@@ -92,11 +92,11 @@ configuration, though one must then also change the configuration files for
 ### The Bar, taking up 40% of the screen
 ![bar](pictures/bar.png)
 
-### The launcher overlaps with the bar and uses the same theming
+### Launcher, OSD and Notification use the same space and styling as the bar
 ![launcher](pictures/launcher.png)
+![osd](pictures/osd.png)
+![notification](pictures/notification.png)
 
-### So does the osd for brightness and volume
-![launcher](pictures/osd.png)
 
 ## Hacks
 
