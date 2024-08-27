@@ -1,22 +1,29 @@
 local main_ratio = 0.60
 local gaps = 10
-local bar_height = 0
+
 local maximize = false
 
-function set_bar_height(height)
-	bar_height = height
-	if height > 0 then
-		bar_height = bar_height + gaps
-	end
-end
+local bar_height = 0
+
+-- This line will be automatically updated by river/init
+local display_size = 1080
 
 function toggle_maximize()
 	maximize = not maximize
 end
 
-set_bar_height(48)
+function set_display_size(input)
+	display_size = input
+end
 
 function handle_layout(args)
+
+	if args.height < display_size then
+		bar_height = display_size - args.height
+	else
+		bar_height = 0
+	end
+
 	local retval = {}
 	if maximize then
 		table.insert(retval, {

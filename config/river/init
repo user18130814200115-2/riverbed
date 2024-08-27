@@ -20,6 +20,12 @@ then
 	wobVolume="| grep -m 1 -o '[0-9][0-9]*%' | sed 's/%//g' > $location/volume"
 fi
 
+# Tell river-luatile the display size
+display_size=$(wlr-randr --json | jq '.[].modes.[].height')
+sed "s/local display_size = .*/local display_size = $display_size/g" -i "$HOME/.config/river-luatile/layout.lua"
+
+
+
 
 # Keybindings
 
@@ -109,7 +115,7 @@ riverctl keyboard-layout -options compose:caps us
 # Startup applications
 
 riverctl spawn fnott
-riverctl spawn "$HOME/.config/waybar/launch"
+riverctl spawn waybar
 riverctl spawn lxqt-policykit-agent
 riverctl spawn 'aplay -r 8000 -f S16_LE /dev/zero'
 
