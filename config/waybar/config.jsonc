@@ -30,7 +30,8 @@
     },
 
 	"river/tags": {
-		"num-tags": 9
+		"num-tags": 9,
+		"cursor": 60
 	},
     "clock": {
         "format-alt": "{:%a, %d. %b  %H:%M}"

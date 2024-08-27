@@ -44,6 +44,10 @@ window#waybar {
 	color: black
 }
 
+#tags button:hover {
+	color: grey
+}
+
 #bluetooth.off {
 	color: grey;
 }
