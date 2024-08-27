@@ -34,9 +34,6 @@
 		"num-tags": 9,
 		"cursor": 60
 	},
-    "clock": {
-        "format-alt": "{:%a, %d. %b  %H:%M}"
-    },
 	"network": {
 		"on-click": "konsole -e nmtui",
         "format-wifi": " {icon}",
