@@ -44,7 +44,7 @@ window#waybar {
 	color: black
 }
 
-#tags button:hover {
+#tags button:hover, #pulseaudio:hover, #network:hover {
 	color: grey
 }
 
