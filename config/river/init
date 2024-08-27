@@ -1,5 +1,8 @@
 #!/bin/sh
 
+# First we lock the screen for login purposes
+riverctl spawn gtklock
+
 # Setup Wob Deamons
 if command -v wob &> /dev/null;
 then
@@ -48,17 +51,17 @@ riverctl map normal None XF86Sleep spawn 'gtklock'
 
 for mode in normal locked
 do
-	riverctl map $mode None XF86MonBrightnessUp   spawn "brightnessctl set +1% $wobBrightness"
-	riverctl map $mode None XF86MonBrightnessDown spawn "brightnessctl set 1%- $wobBrightness"
-	riverctl map $mode Shift XF86MonBrightnessUp   spawn "brightnessctl set +5% $wobBrightness"
-	riverctl map $mode Shift XF86MonBrightnessDown spawn "brightnessctl set 5%- $wobBrightness"
+	riverctl map -repeat $mode None XF86MonBrightnessUp spawn "brightnessctl set +1% $wobBrightness"
+	riverctl map -repeat $mode None XF86MonBrightnessDown spawn "brightnessctl set 1%- $wobBrightness"
+	riverctl map -repeat $mode Shift XF86MonBrightnessUp spawn "brightnessctl set +5% $wobBrightness"
+	riverctl map -repeat $mode Shift XF86MonBrightnessDown spawn "brightnessctl set 5%- $wobBrightness"
 
 
-	riverctl map $mode None XF86AudioRaiseVolume spawn "amixer -D pulse sset Master 1%+ $wobVolume"
-	riverctl map $mode None XF86AudioLowerVolume spawn "amixer -D pulse sset Master 1%- $wobVolume"
-	riverctl map $mode Shift XF86AudioRaiseVolume spawn "amixer -D pulse sset Master 5%+ $wobVolume"
-	riverctl map $mode Shift  XF86AudioLowerVolume spawn "amixer -D pulse sset Master 5%- $wobVolume"
-	riverctl map $mode None XF86AudioMute        spawn 'amixer -D pulse set Master 1+ toggle'
+	riverctl map -repeat $mode None XF86AudioRaiseVolume spawn "amixer -D pulse sset Master 1%+ $wobVolume"
+	riverctl map -repeat $mode None XF86AudioLowerVolume spawn "amixer -D pulse sset Master 1%- $wobVolume"
+	riverctl map -repeat $mode Shift XF86AudioRaiseVolume spawn "amixer -D pulse sset Master 5%+ $wobVolume"
+	riverctl map -repeat $mode Shift  XF86AudioLowerVolume spawn "amixer -D pulse sset Master 5%- $wobVolume"
+	riverctl map -repeat $mode None XF86AudioMute        spawn 'amixer -D pulse set Master 1+ toggle'
 
 	riverctl map-switch $mode lid close spawn 'wlr-randr --output eDP-1 --off'
 	riverctl map-switch $mode lid open spawn 'wlr-randr --output eDP-1 --on'
@@ -94,7 +97,7 @@ riverctl rule-add -app-id "Gimp*" no-float
 # Input
 riverctl set-repeat 40 300
 riverctl hide-cursor when-typing enabled
-riverctl focus-follows-cursor always
+riverctl focus-follows-cursor normal
 riverctl set-cursor-warp on-focus-change
 
 riverctl input pointer-9610-30-Pine64_Pinebook_Pro_Touchpad tap enabled
@@ -104,7 +107,6 @@ riverctl keyboard-layout -options compose:caps us
 
 # Startup applications
 
-riverctl spawn gtklock
 riverctl spawn mako
 riverctl spawn waybar
 riverctl spawn lxqt-policykit-agent
