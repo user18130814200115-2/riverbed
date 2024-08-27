@@ -18,6 +18,7 @@
 	},
 
 	"pulseaudio": {
+		"on-click": "pavucontrol-qt",
         "format": "{icon}",
         "format-muted": " ",
         "format-icons": {
@@ -37,6 +38,7 @@
         "format-alt": "{:%a, %d. %b  %H:%M}"
     },
 	"network": {
+		"on-click": "konsole -e nmtui",
         "format-wifi": " {icon}",
         "format-ethernet": "  ",
         "format-disconnected": "󰌙 ",
