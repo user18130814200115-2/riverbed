@@ -1,7 +1,8 @@
 {
-    "layer": "top",
-	"mode": "overlay",
+    "layer": "bottom",
+	"mode": "dock",
 	"height": 48,
+	"width": 10,
 	"margin": 10,
 	"spacing": 10,
 	"modules-left": ["river/tags"],
@@ -36,7 +37,7 @@
 	"network": {
         "format-wifi": " {icon}",
         "format-ethernet": "  ",
-        "format-disconnected": "󰌙",
+        "format-disconnected": "󰌙 ",
         "format-icons": [
             "󰤯 ",
             "󰤟 ",

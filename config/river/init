@@ -40,7 +40,8 @@ riverctl map normal Super Up focus-view previous
 riverctl map-pointer normal Super BTN_LEFT move-view
 riverctl map-pointer normal Super BTN_RIGHT resize-view
 
-riverctl map normal Super F toggle-fullscreen
+riverctl map normal Super F send-layout-cmd luatile 'toggle_maximize()'
+riverctl map normal Super+Alt F toggle-fullscreen
 riverctl map normal Super+Shift f toggle-float
 
 ## F-Keys
