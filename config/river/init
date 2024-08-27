@@ -109,7 +109,7 @@ riverctl keyboard-layout -options compose:caps us
 # Startup applications
 
 riverctl spawn mako
-riverctl spawn waybar
+riverctl spawn "$HOME/.config/waybar/launch"
 riverctl spawn lxqt-policykit-agent
 riverctl spawn 'aplay -r 8000 -f S16_LE /dev/zero'
 
