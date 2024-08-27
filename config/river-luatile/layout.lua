@@ -25,6 +25,9 @@ function handle_layout(args)
 			(args.width - gaps * 2),
 			args.height + bar_height - gaps * 2
 		})
+		for i = 0, (args.count - 2) do
+			table.insert(retval, {0,0,0,0})
+		end
 	else
 		if args.count == 1 then
 			table.insert(retval, {
