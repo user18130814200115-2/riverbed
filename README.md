@@ -37,7 +37,7 @@ Riverbed uses the following programs
 | pass | Password and OTP manager |
 
 I personally use the KDE suite of applications, but this can easily be
-substituted by wither GNOME or diagnostic applications.
+substituted by with GNOME or DE agnostic applications.
 
 ## Alpine-specific
 
