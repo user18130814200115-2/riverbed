@@ -11,29 +11,16 @@ window#waybar {
 	color: black;
 }
 
-.modules-left{
+box:not(.modules-left):not(.modules-right):not(.modules-center):not(#tags){
+	margin-left: calc(1920px * 0.6 + 2px);
 	background: @bg;
-	margin-left: 1144px;
-	border-top: solid black 2px;
-	border-bottom: solid black 2px;
-	border-left: solid black 2px;
-	min-width: 347px;
+	border: solid black 2px;
 }
 
-.modules-center{
-	background: @bg;
-	border-top: solid black 2px;
-	border-bottom: solid black 2px;
+.modules-right {
+	margin-right: 10px
 }
 
-.modules-right{
-	background: @bg;
-	border-top: solid black 2px;
-	border-bottom: solid black 2px;
-	border-right: solid black 2px;
-	padding-right: 10px;
-	min-width: 350px;
-}
 
 #tags button{
 	color: transparent;
