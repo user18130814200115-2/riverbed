@@ -1,25 +1,24 @@
-local main_ratio = 0.60
+-- These lines will be automatically updated by river/init
 local gaps = 10
+local main_ratio = 0.60
+local display_height = 1080
+-- END
 
 local maximize = false
-
 local bar_height = 0
-
--- This line will be automatically updated by river/init
-local display_size = 1080
 
 function toggle_maximize()
 	maximize = not maximize
 end
 
-function set_display_size(input)
-	display_size = input
+function set_display_height(input)
+	display_height = input
 end
 
 function handle_layout(args)
 
-	if args.height < display_size then
-		bar_height = display_size - args.height
+	if args.height < display_height then
+		bar_height = display_height - args.height
 	else
 		bar_height = 0
 	end
@@ -70,4 +69,3 @@ end
 function handle_metadata(args)
 	return { name = "runoff" }
 end
-
