@@ -1,8 +1,10 @@
 {
+   // These lines will be updated automatically by river/init 
+   "height": 58,
+   // END
     "layer": "bottom",
 	"exclusive": false,
 	"mode": "dock",
-	"height": 58,
 	"width": 0,
 	"spacing": 10,
 	"modules-left": ["river/tags"],

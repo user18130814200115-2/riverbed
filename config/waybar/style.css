@@ -3,6 +3,7 @@ box:not(.modules-left):not(.modules-right):not(.modules-center):not(#tags){
 	margin-left: calc(1920px * 0.60 + 2px);
 	margin-right: 10px;
 	margin-top: 10px;
+	border-width: 2px;
 }
 /* END*/
 
@@ -18,9 +19,9 @@ window#waybar {
 }
 
 box:not(.modules-left):not(.modules-right):not(.modules-center):not(#tags){
-	margin-left: calc(1920px * 0.6 + 2px);
 	background: white;
-	border: solid black 2px;
+	border-style: solid;
+	border-color: black;
 }
 
 .modules-right {

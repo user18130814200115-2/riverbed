@@ -1,35 +1,33 @@
-width = 756
+#These lines will be updated automatically by river/init
+margin-top = 10
+margin-right = 10
 height = 48
+width = 756
+border-width = 2
+#END
+
+anchor = top-right
 horizontal = true
 
+clip-to-padding = true
+scale = true
 require-match=false
 
-prompt-padding = 10
-result-spacing = 10
 prompt-text = "󱓞"
 min-input-width = 60
-outline-width = 0
 
 background-color = #ffffff
 text-color = #000000
-font-size = 11
-
-border-width = 2
+selection-color = #3daee9d9
 border-color = #000000
+
+font-size = 11
+outline-width = 0
 
 padding-top = 10
 padding-bottom = 10
 padding-left = 10
 padding-right = 10
 
-# Whether to clip text drawing to be within the specified padding. This
-# is mostly important for allowing text to be inset from the border,
-# while still allowing text backgrounds to reach right to the edge.
-clip-to-padding = true
-
-# Whether to scale the window by the output's scale factor.
-scale = true
-
-anchor = top-right
-margin-top = 10
-margin-right = 10
+prompt-padding = 10
+result-spacing = 10
