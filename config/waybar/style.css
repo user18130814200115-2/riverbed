@@ -39,19 +39,27 @@ box:not(.modules-left):not(.modules-right):not(.modules-center):not(#tags){
 	color: grey;
 }
 
-#battery.warning {
+#battery.warning:not(.charging) {
 	color: orange;
-	animation: blinker 1s linear 5;
+	animation-name: blink;
+	animation-duration: 1s;
+	animation-timing-function: steps(25);
+	animation-iteration-count: 10;
+	animation-direction: alternate;
 }
-#battery.critical {
+#battery.critical:not(.charching) {
 	color: red;
-	animation: blinker 1s linear 25;
+	animation-name: blink;
+	animation-duration: 0.5s;
+	animation-timing-function: steps(25);
+	animation-iteration-count: 50;
+	animation-direction: alternate;
 }
-window#waybar.battery-critical .modules-right,window#waybar.battery-critical .modules-center, window#waybar.battery-critical .modules-left {
+window#waybar.battery-critical box{
 	border-color: red;
 }
-@keyframes blinker {
-  50% {
+@keyframes blink {
+  to {
     color: transparent;
   }
 }
