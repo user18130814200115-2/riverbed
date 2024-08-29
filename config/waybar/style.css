@@ -28,6 +28,9 @@ box:not(.modules-left):not(.modules-right):not(.modules-center):not(#tags){
 	margin-right: 10px
 }
 
+.module {
+	padding: 5px
+}
 
 #tags button{
 	color: transparent;

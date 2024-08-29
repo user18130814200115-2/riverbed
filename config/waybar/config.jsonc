@@ -1,32 +1,32 @@
 {
    // These lines will be updated automatically by river/init 
-   "height": 58,
+  "height": 58,
    // END
-    "layer": "bottom",
+   "layer":"bottom",
 	"exclusive": false,
-	"mode": "dock",
+	"mode":"dock",
 	"width": 0,
 	"spacing": 10,
 	"modules-left": ["river/tags"],
 	"modules-center": ["clock"],
-    "modules-right": ["bluetooth", "pulseaudio", "network", "battery"],
+   "modules-right": ["bluetooth","pulseaudio","network","battery"],
 
 	"bluetooth": {
-		"format": "",
-		"format-off": "󰂲 ",
-		"format-on": " ",
-		"format-connected": "󰂱 "
+		"format":"",
+		"format-off":"󰂲",
+		"format-on":"",
+		"format-connected":"󰂱"
 	},
 
 	"pulseaudio": {
-		"on-click": "pavucontrol-qt",
-        "format": "{icon}",
-        "format-muted": " ",
-        "format-icons": {
-            "default": [
-                " ",
-                " ",
-                " "
+		"on-click":"pavucontrol-qt",
+       "format":"{icon}",
+       "format-muted":"",
+       "format-icons": {
+           "default": [
+               "",
+               "",
+               ""
             ]
         }
     },
@@ -35,39 +35,41 @@
 		"num-tags": 9,
 		"cursor": 60
 	},
+
 	"network": {
-		"on-click": "konsole -e nmtui",
-        "format-wifi": " {icon}",
-        "format-ethernet": "  ",
-        "format-disconnected": "󰌙 ",
-        "format-icons": [
-            "󰤯 ",
-            "󰤟 ",
-            "󰤢 ",
-            "󰤢 ",
-            "󰤨 "
+		"on-click":"konsole -e nmtui",
+       "format-wifi":" {icon}",
+       "format-ethernet":" ",
+       "format-disconnected":"󰌙",
+       "format-icons": [
+           "󰤯",
+           "󰤟",
+           "󰤢",
+           "󰤢",
+           "󰤨"
         ]
     },
-    "battery": {
-        "states": {
-            "warning": 15,
-            "critical": 5
+
+   "battery": {
+       "states": {
+           "warning": 15,
+           "critical": 5
         },
-        "format": "{icon} {capacity}%",
-        "format-charging": "󰂄 {capacity}%",
-        "format-plugged": "󰂄 {capacity}%",
-        "format-icons": [
-            "󰂎",
-            "󰁺",
-            "󰁻",
-            "󰁼",
-            "󰁽",
-            "󰁾",
-            "󰁿",
-            "󰂀",
-            "󰂁",
-            "󰂂",
-            "󰁹"
+       "format":"{icon} {capacity}%",
+       "format-charging":"󰂄 {capacity}%",
+       "format-plugged":"󰂄 {capacity}%",
+       "format-icons": [
+           "󰂎",
+           "󰁺",
+           "󰁻",
+           "󰁼",
+           "󰁽",
+           "󰁾",
+           "󰁿",
+           "󰂀",
+           "󰂁",
+           "󰂂",
+           "󰁹"
         ]
     }
 }
