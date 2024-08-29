@@ -32,7 +32,7 @@ function handle_layout(args)
 			args.height + bar_height - gaps * 2
 		})
 		for i = 0, (args.count - 2) do
-			table.insert(retval, {0,0,0,0})
+			table.insert(retval, {0,display_height,0,0})
 		end
 	else
 		if args.count == 1 then
