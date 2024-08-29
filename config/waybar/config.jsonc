@@ -12,10 +12,10 @@
     "modules-right": ["bluetooth", "pulseaudio", "network", "battery"],
 
 	"bluetooth": {
-	"format": "",
-	"format-off": "󰂲 ",
-	"format-on": " ",
-	"format-connected": "󰂱 "
+		"format": "",
+		"format-off": "󰂲 ",
+		"format-on": " ",
+		"format-connected": "󰂱 "
 	},
 
 	"pulseaudio": {

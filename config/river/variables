@@ -1,0 +1,14 @@
+gaps=10
+main_ratio=0.60
+bar_height=48
+border_size=2
+
+background_color=eeeeee
+window_color=ffffff
+border_color=000000
+border_color_inactive=ffffff
+text_color=000000
+
+cursor_theme='capitaine-cursors-dark'
+
+background="$HOME/Pictures/background.png"

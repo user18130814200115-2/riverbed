@@ -3,12 +3,17 @@
 # First we lock the screen for login purposes
 riverctl spawn gtklock
 
-# VARIABLES
-gaps=10
-main_ratio=0.60
-bar_height=48
-border_size=2
+exec_location="$HOME/.config/river"
 
+# Retrieve user settings
+while read line
+do
+	eval $line
+done < "$exec_location/variables"
+
+source "$exec_location/keybinds"
+
+# Calculate derived settings
 display_height=$(wlr-randr --json | jq '.[].modes.[].height')
 display_width=$(wlr-randr --json | jq '.[].modes.[].width')
 bar_width=$(echo "$display_width * (1 - $main_ratio)" | bc -l | sed 's/\..*$//g')
@@ -34,9 +39,11 @@ box:not(.modules-left):not(.modules-right):not(.modules-center):not(#tags){
 	margin-right: ${gaps}px;
 	margin-top: ${gaps}px;
 	border-width: ${border_size}px;
+	background: #${window_color};
+	border-color: #${border_color};
 }
 /* END*/
-$(tail -n +9 $file)\
+$(tail -n +11 $file)\
 " > $file
 
 file="$HOME/.config/waybar/config.jsonc"
@@ -55,7 +62,7 @@ echo "\
 margin=-$bar_height $gaps 0 0
 height=$bar_height
 width=$(($bar_width - $gaps - $border_size))
-bar_padding=-$border_size
+bar_padding=$(($border_size - 4))
 ;END
 $(tail -n +7 $file)\
 " > $file
@@ -69,8 +76,13 @@ edge-margin-horizontal = $gaps
 max-height = $bar_height
 min-width = $(($bar_width - $gaps - $border_size))
 border-size = $border_size
+background = ${window_color}ff
+border-color = ${border_color}ff
+title-color = ${text_color}ff
+summary-color = ${text_color}ff
+body-color = ${text_color}ff
 #END
-$(tail -n +8 $file)\
+$(tail -n +13 $file)\
 " > $file
 
 # tofi
@@ -82,12 +94,20 @@ margin-right = $gaps
 height = $bar_height
 width = $(($bar_width - $gaps - $border_size))
 border-width = $border_size
+background-color = #${window_color}
+text-color = #${text_color}
+border-color = #${border_color}
 #END
-$(tail -n +8 $file)\
+$(tail -n +11 $file)\
 " > $file
 
-
-# Setup Wob Deamons
+# Auto start all applications
+cat "$exec_location/autostart" | while read application
+do
+	riverctl spawn "$application"
+done
+riverctl spawn 'aplay -r 8000 -f S16_LE /dev/zero'
+## Special code for starting wob
 if command -v wob &> /dev/null;
 then
 	setup_deamon() {
@@ -99,109 +119,29 @@ then
 	location="$XDG_RUNTIME_DIR/wob"
 	mkdir "$location"
 	setup_deamon brightness &
-	wobBrightness="-m | cut -d, -f4 | sed 's/%//g' > $location/brightness"
 	setup_deamon volume &
-	wobVolume="| grep -m 1 -o '[0-9][0-9]*%' | sed 's/%//g' > $location/volume"
 fi
 
-
-
-
-
-# Keybindings
-
-riverctl map normal Super Return spawn konsole
-riverctl map normal Super Space spawn 'j4-dmenu-desktop --no-generic --dmenu=tofi'
-riverctl map normal Super+Shift Space spawn 'echo | tofi | sh'
-
-
-riverctl map normal Super+Shift q close
-riverctl map normal Super+Shift Return zoom
-
-riverctl map normal Super+Shift Down swap next
-riverctl map normal Super+Shift Up swap previous
-
-riverctl map normal Super Down focus-view next
-riverctl map normal Super Up focus-view previous
-
-riverctl map-pointer normal Super BTN_LEFT move-view
-riverctl map-pointer normal Super BTN_RIGHT resize-view
-
-riverctl map normal Super F send-layout-cmd luatile 'toggle_maximize()'
-riverctl map normal Super+Alt F toggle-fullscreen
-riverctl map normal Super+Shift f toggle-float
-
-## F-Keys
-
-riverctl map normal None Print spawn 'grimshot save area ~/Pictures/Screenshots/$(date +%d-%m-%y-%H:%M).png'
-
-riverctl map normal None XF86Sleep spawn 'gtklock'
-
-for mode in normal locked
-do
-	riverctl map -repeat $mode None XF86MonBrightnessUp spawn "brightnessctl set +1% $wobBrightness"
-	riverctl map -repeat $mode None XF86MonBrightnessDown spawn "brightnessctl set 1%- $wobBrightness"
-	riverctl map -repeat $mode Shift XF86MonBrightnessUp spawn "brightnessctl set +5% $wobBrightness"
-	riverctl map -repeat $mode Shift XF86MonBrightnessDown spawn "brightnessctl set 5%- $wobBrightness"
-
-
-	riverctl map -repeat $mode None XF86AudioRaiseVolume spawn "amixer -D pulse sset Master 1%+ $wobVolume"
-	riverctl map -repeat $mode None XF86AudioLowerVolume spawn "amixer -D pulse sset Master 1%- $wobVolume"
-	riverctl map -repeat $mode Shift XF86AudioRaiseVolume spawn "amixer -D pulse sset Master 5%+ $wobVolume"
-	riverctl map -repeat $mode Shift  XF86AudioLowerVolume spawn "amixer -D pulse sset Master 5%- $wobVolume"
-	riverctl map -repeat $mode None XF86AudioMute        spawn 'amixer -D pulse set Master 1+ toggle'
-
-	riverctl map-switch $mode lid close spawn 'wlr-randr --output eDP-1 --off'
-	riverctl map-switch $mode lid open spawn 'wlr-randr --output eDP-1 --on'
-done
-
-
-for i in $(seq 1 9)
-do
-	tags=$((1 << ($i -1)))
-	riverctl map normal Super $i set-focused-tags $tags
-	riverctl map normal Super+Shift $i set-view-tags $tags
-
-    riverctl map normal Super+Control $i toggle-focused-tags $tags
-    riverctl map normal Super+Shift+Control $i toggle-view-tags $tags
-done
-
-all_tags=$(((1 << 32) - 1))
-riverctl map normal Super 0 set-focused-tags $all_tags
-riverctl map normal Super+Shift 0 set-view-tags $all_tags
-
-# Visuals
-riverctl background-color 0xeeeeee
-riverctl spawn "wbg $HOME/Pictures/background.png"
-riverctl border-color-focused 0x000000
-riverctl border-color-unfocused 0xffffff
+# Apply user settings
+riverctl background-color $background_color
+riverctl spawn "wbg $background"
+riverctl border-color-focused 0x$border_color
+riverctl border-color-unfocused 0x$broder_color_inactive
 riverctl border-width $border_width
-riverctl xcursor-theme capitaine-cursors-dark
-
-# Window rules
-riverctl rule-add -app-id lxqt-policykit-agent float
-riverctl rule-add -app-id "Gimp*" no-float
-
-
-# Input
-riverctl set-repeat 40 300
-riverctl hide-cursor when-typing enabled
-riverctl focus-follows-cursor normal
-riverctl set-cursor-warp on-focus-change
-
-riverctl input pointer-9610-30-Pine64_Pinebook_Pro_Touchpad tap enabled
-riverctl input pointer-9610-30-Pine64_Pinebook_Pro_Touchpad natural-scroll enabled
-
-riverctl keyboard-layout -options compose:caps us
-
-# Startup applications
-
-riverctl spawn fnott
-riverctl spawn waybar
-riverctl spawn lxqt-policykit-agent
+riverctl xcursor-theme "$cursor_theme"
 riverctl spawn 'aplay -r 8000 -f S16_LE /dev/zero'
 
-# Layout
+# Set sane default rules
+riverctl rule-add -app-id lxqt-policykit-agent float
+riverctl rule-add -app-id popup float
+riverctl rule-add -app-id "Gimp*" no-float
 riverctl default-attach-mode bottom
 riverctl default-layout luatile
+
+# Apply custom user rules
+cat "$exec_location/custom" | while read line
+do
+	riverctl $line
+done
+
 river-luatile &

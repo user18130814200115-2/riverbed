@@ -4,6 +4,8 @@ box:not(.modules-left):not(.modules-right):not(.modules-center):not(#tags){
 	margin-right: 10px;
 	margin-top: 10px;
 	border-width: 2px;
+	background: #ffffff;
+	border-color: #000000;
 }
 /* END*/
 
@@ -19,9 +21,7 @@ window#waybar {
 }
 
 box:not(.modules-left):not(.modules-right):not(.modules-center):not(#tags){
-	background: white;
 	border-style: solid;
-	border-color: black;
 }
 
 .modules-right {
@@ -54,7 +54,7 @@ box:not(.modules-left):not(.modules-right):not(.modules-center):not(#tags){
 	animation-iteration-count: 10;
 	animation-direction: alternate;
 }
-#battery.critical:not(.charching) {
+#battery.critical:not(.charging) {
 	color: red;
 	animation-name: blink;
 	animation-duration: 0.5s;
@@ -62,9 +62,7 @@ box:not(.modules-left):not(.modules-right):not(.modules-center):not(#tags){
 	animation-iteration-count: 50;
 	animation-direction: alternate;
 }
-window#waybar.battery-critical box{
-	border-color: red;
-}
+
 @keyframes blink {
   to {
     color: transparent;
