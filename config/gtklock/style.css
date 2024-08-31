@@ -1,0 +1,42 @@
+* {
+	all: unset
+}
+
+window {
+	background-image: url("/home/user/Pictures/background.png");
+	background-size: cover;
+	background-repeat: no-repeat;
+	background-position: center;
+	background-color: black;
+	font-size: 14px;
+	font-family: JetBrainsMono Nerd Font;
+	color: black;
+}
+
+entry {
+	letter-spacing: 5px;
+}
+
+#clock-label {
+	font-size: 32px
+}
+
+#input-label {
+	font-size: 0;
+	padding: 0px;
+	border: none
+}
+
+button:hover label, button:hover{
+	background-color: #efefef
+}
+
+#window-box, button, entry {
+	padding: 10px;
+	background-image: none;
+	box-shadow: none;
+	background-color: white;
+	border: solid black 2px;
+	border-radius: 0px
+}
+
