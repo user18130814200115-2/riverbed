@@ -1,13 +1,4 @@
-#These lines will be updated automatically by river/init
-margin-top = 10
-margin-right = 10
-height = 48
-width = 756
-border-width = 2
-background-color = #ffffff
-text-color = #000000
-border-color = #000000
-#END
+include = riverbed-autogen
 
 anchor = top-right
 horizontal = true

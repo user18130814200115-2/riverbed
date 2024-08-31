@@ -20,18 +20,17 @@ bar_width=$(echo "$display_width * (1 - $main_ratio)" | bc -l | sed 's/\..*$//g'
 
 # Tell the various components of the desktop relevant information
 # luatile
-file="$HOME/.config/river-luatile/layout.lua"
+file="$HOME/.config/river-luatile/riverbed-autogen.lua"
 echo "\
 -- These lines will be automatically updated by river/init
-local gaps = $gaps
-local main_ratio = $main_ratio
-local display_height = $display_height
--- END
-$(tail -n +6 $file)\
+gaps = $gaps
+main_ratio = $main_ratio
+display_height = $display_height
+-- END\
 " > $file
 
 # waybar
-file="$HOME/.config/waybar/style.css"
+file="$HOME/.config/waybar/riverbed-autogen.css"
 echo "\
 /* These lines will be updated automatically by river/init */
 box:not(.modules-left):not(.modules-right):not(.modules-center):not(#tags){
@@ -42,17 +41,16 @@ box:not(.modules-left):not(.modules-right):not(.modules-center):not(#tags){
 	background: #${window_color};
 	border-color: #${border_color};
 }
-/* END*/
-$(tail -n +11 $file)\
+/* END*/\
 " > $file
 
-file="$HOME/.config/waybar/config.jsonc"
+file="$HOME/.config/waybar/riverbed-autogen.jsonc"
 echo "\
 {
    // These lines will be updated automatically by river/init 
    \"height\": $(($bar_height + $gaps)),
    // END
-$(tail -n +5 $file)\
+}\
 " > $file
 
 # wob
@@ -86,7 +84,7 @@ $(tail -n +13 $file)\
 " > $file
 
 # tofi
-file="$HOME/.config/tofi/config"
+file="$HOME/.config/tofi/riverbed-autogen"
 echo "\
 #These lines will be updated automatically by river/init
 margin-top = $gaps
@@ -97,8 +95,7 @@ border-width = $border_size
 background-color = #${window_color}
 text-color = #${text_color}
 border-color = #${border_color}
-#END
-$(tail -n +11 $file)\
+#END\
 " > $file
 
 # Auto start all applications
@@ -137,6 +134,13 @@ riverctl rule-add -app-id popup float
 riverctl rule-add -app-id "Gimp*" no-float
 riverctl default-attach-mode bottom
 riverctl default-layout luatile
+
+
+riverctl map-switch normal lid close spawn 'gtklock -d && wlr-randr --output eDP-1 --off'
+riverctl map-switch locked lid close spawn 'wlr-randr --output eDP-1 --off'
+riverctl map-switch normal lid open spawn 'wlr-randr --output eDP-1 --on'
+riverctl map-switch locked lid open spawn 'wlr-randr --output eDP-1 --on'
+
 
 # Apply custom user rules
 cat "$exec_location/custom" | while read line

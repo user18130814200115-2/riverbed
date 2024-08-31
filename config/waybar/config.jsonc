@@ -1,8 +1,6 @@
 {
-   // These lines will be updated automatically by river/init 
-  "height": 58,
-   // END
-   "layer":"bottom",
+	"include": "$HOME/.config/waybar/riverbed-autogen.jsonc",
+	"layer":"bottom",
 	"exclusive": false,
 	"mode":"dock",
 	"width": 0,

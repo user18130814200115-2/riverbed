@@ -26,7 +26,7 @@ riverctl map normal None XF86Sleep spawn 'gtklock'
 riverctl map normal Super P spawn "ls $HOME/.password-store | cut -d. -f1 | tofi | xargs pass otp | xargs wtype"
 
 wobBrightness="-m | cut -d, -f4 | sed 's/%//g' > $XDG_RUNTIME_DIR/wob/brightness"
-wobVolume="| grep -m 1 -o '[0-9][0-9]*%' | sed 's/%//g' > $XDG_RUNTIME_DIR/wob/volume"
+wobVolume="| grep -m -1 -o '[0-9][0-9]*%' | sed 's/%//g' > $XDG_RUNTIME_DIR/wob/volume"
 
 for mode in normal locked
 do
@@ -40,9 +40,6 @@ do
 	riverctl map -repeat $mode Shift XF86AudioRaiseVolume 	spawn "amixer -D pulse sset Master 5%+ $wobVolume"
 	riverctl map -repeat $mode Shift  XF86AudioLowerVolume 	spawn "amixer -D pulse sset Master 5%- $wobVolume"
 	riverctl map -repeat $mode None XF86AudioMute 			spawn 'amixer -D pulse set Master 1+ toggle'
-
-	riverctl map-switch $mode lid close 					spawn 'wlr-randr --output eDP-1 --off'
-	riverctl map-switch $mode lid open 						spawn 'wlr-randr --output eDP-1 --on'
 done
 
 
