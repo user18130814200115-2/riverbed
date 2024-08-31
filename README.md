@@ -9,7 +9,8 @@ environment.
 This repository is designed for installation on top of an existing alpine
 console installation
 
-The files in the `config` folder go into `$XDG_CONFIG_HOME`.
+The files in the `config` folder go into `$XDG_CONFIG_HOME` except for the
+`gnupg` folder which goes to `$HOME/.gnupg`.
 
 Files in the etc folder must be moved by a privileged user into `/etc/`.
 
