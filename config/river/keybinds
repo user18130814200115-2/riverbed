@@ -1,7 +1,7 @@
 #!/bin/sh
 
 riverctl map normal Super Return spawn konsole
-riverctl map normal Super Space spawn 'j4-dmenu-desktop --no-generic --dmenu=tofi'
+riverctl map normal Super Space spawn 'tofi-drun'
 riverctl map normal Super+Shift Space spawn 'echo | tofi | sh'
 
 riverctl map normal Super+Shift q close
