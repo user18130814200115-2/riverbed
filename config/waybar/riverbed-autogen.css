@@ -1,6 +1,6 @@
 /* These lines will be updated automatically by river/init */
 box:not(.modules-left):not(.modules-right):not(.modules-center):not(#tags){
-	margin-left: calc(1920px * 0.60 + 2px);
+	margin-left: calc((1920px - 2 * 10px )* 0.60 + 10px - 10px * (0.60 - 1));
 	margin-right: 10px;
 	margin-top: 10px;
 	border-width: 2px;

@@ -10,5 +10,7 @@ border_color_inactive=ffffff
 text_color=000000
 
 cursor_theme='capitaine-cursors-dark'
-
 background="$HOME/Pictures/background.png"
+
+layout_engine='river-luatile'
+layout_namespace='luatile'

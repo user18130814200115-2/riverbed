@@ -1,3 +1,5 @@
 fnott
 waybar
 lxqt-policykit-agent
+aplay -r 8000 -f S16_LE /dev/zero
+

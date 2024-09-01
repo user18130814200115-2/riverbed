@@ -1,7 +1,9 @@
 #!/bin/sh
 
+riverctl map normal Super R spawn "$HOME/.config/river/init reload"
+
 riverctl map normal Super Return spawn konsole
-riverctl map normal Super Space spawn 'tofi-drun'
+riverctl map normal Super Space spawn 'tofi-drun | xargs riverctl spawn'
 riverctl map normal Super+Shift Space spawn 'echo | tofi | sh'
 
 riverctl map normal Super+Shift q close
@@ -26,7 +28,7 @@ riverctl map normal None XF86Sleep spawn 'gtklock'
 riverctl map normal Super P spawn "ls $HOME/.password-store | cut -d. -f1 | tofi | xargs pass otp | xargs wtype"
 
 wobBrightness="-m | cut -d, -f4 | sed 's/%//g' > $XDG_RUNTIME_DIR/wob/brightness"
-wobVolume="| grep -m -1 -o '[0-9][0-9]*%' | sed 's/%//g' > $XDG_RUNTIME_DIR/wob/volume"
+wobVolume="| grep -m 1 -o '[0-9][0-9]*%' | sed 's/%//g' > $XDG_RUNTIME_DIR/wob/volume"
 
 for mode in normal locked
 do

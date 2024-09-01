@@ -1,13 +1,14 @@
 {
 	"include": "$HOME/.config/waybar/riverbed-autogen.jsonc",
 	"layer":"bottom",
+	"reload_style_on_change": true,
 	"exclusive": false,
 	"mode":"dock",
 	"width": 0,
 	"spacing": 10,
 	"modules-left": ["river/tags"],
 	"modules-center": ["clock"],
-   "modules-right": ["bluetooth","pulseaudio","network","battery"],
+	"modules-right": ["bluetooth","pulseaudio","network","battery"],
 
 	"bluetooth": {
 		"format":"",
