@@ -1,3 +1,5 @@
+@import url("riverbed-autogen.css");
+
 * {
 	all: unset
 }
@@ -28,11 +30,10 @@ entry {
 }
 
 button:hover label, button:hover{
-	background-color: #efefef
+	background-color: #efefef;
 }
 
-#window-box, button, entry {
-	padding: 10px;
+button, entry {
 	background-image: none;
 	box-shadow: none;
 	background-color: white;
