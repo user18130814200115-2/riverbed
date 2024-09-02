@@ -33,6 +33,8 @@ border-color: #${border_color};
 " > $file
 
 file="$HOME/.config/waybar/riverbed-autogen.jsonc"
+oldheight=$(cat $file | grep "height\":" | grep -o "[0-9][0-9]*")
+if [ "$oldheight" != "$((bar_height + $gaps))" ]; then
 echo "\
 {
 // These lines will be updated automatically by river/init 
@@ -40,6 +42,9 @@ echo "\
 // END
 }\
 " > $file
+killall waybar
+riverctl spawn waybar
+fi
 
 # wob
 file="$HOME/.config/wob/wob.ini"
