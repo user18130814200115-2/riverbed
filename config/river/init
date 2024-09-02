@@ -2,63 +2,50 @@
 
 exec_location="$HOME/.config/river"
 
-get_settings() {
-	# Retrieve user settings
-	while read line
-	do
-		eval $line
-	done < "$exec_location/variables"
-
-	source "$exec_location/keybinds"
-
-	# Calculate derived settings
-	display_height=$(wlr-randr --json | jq '.[].modes.[].height')
-	display_width=$(wlr-randr --json | jq '.[].modes.[].width')
-	bar_width=$(echo "($display_width - 2 * $gaps * $main_ratio) - 100" | bc -l | sed 's/\..*$//g')
-
-}
-
 external_settings() {
-	# Tell the various components of the desktop relevant information
-	# luatile
-	file="$HOME/.config/river-luatile/riverbed-autogen.lua"
-	echo "\
+# Tell the various components of the desktop relevant information
+# luatile
+file="$HOME/.config/river-luatile/riverbed-autogen.lua"
+echo "\
 -- These lines will be automatically updated by river/init
 gaps = $gaps
 main_ratio = $main_ratio
 display_height = $display_height
+bar_height = $bar_height
+layout = '$layout'
 -- END\
 " > $file
 
-	# waybar
-	file="$HOME/.config/waybar/riverbed-autogen.css"
-	echo "\
+# waybar
+file="$HOME/.config/waybar/riverbed-autogen.css"
+echo "\
 /* These lines will be updated automatically by river/init */
 box:not(.modules-left):not(.modules-right):not(.modules-center):not(#tags){
-	margin-left: calc((${display_width}px - 2 * ${gaps}px )* $main_ratio + ${gaps}px - ${gaps}px * ($main_ratio - 1));
-	margin-right: ${gaps}px;
-	margin-top: ${gaps}px;
-	border-width: ${border_size}px;
-	background: #${window_color};
-	border-color: #${border_color};
+/*margin-left: calc((${display_width}px - 2 * ${gaps}px )* $main_ratio + ${gaps}px - ${gaps}px * ($main_ratio - 1));*/
+margin-left: ${bar_left}px;
+margin-right: ${bar_right}px;
+margin-top: ${gaps}px;
+border-width: ${border_size}px;
+background: #${window_color};
+border-color: #${border_color};
 }
 /* END*/\
 " > $file
 
-	file="$HOME/.config/waybar/riverbed-autogen.jsonc"
-	echo "\
+file="$HOME/.config/waybar/riverbed-autogen.jsonc"
+echo "\
 {
-   // These lines will be updated automatically by river/init 
-   \"height\": $(($bar_height + $gaps)),
-   // END
+// These lines will be updated automatically by river/init 
+\"height\": $(($bar_height + $gaps)),
+// END
 }\
 " > $file
 
-	# wob
-	file="$HOME/.config/wob/wob.ini"
-	echo "\
+# wob
+file="$HOME/.config/wob/wob.ini"
+echo "\
 ;These lines will be updated automatically by river/init
-margin=-$bar_height $gaps 0 0
+margin=-$bar_height $bar_right 0 0
 height=$bar_height
 width=$bar_width
 bar_padding=$(($border_size - 4))
@@ -66,12 +53,12 @@ bar_padding=$(($border_size - 4))
 $(tail -n +7 $file)\
 " > $file
 
-	# fnott
-	file="$HOME/.config/fnott/fnott.ini"
-	echo "\
+# fnott
+file="$HOME/.config/fnott/fnott.ini"
+echo "\
 #These lines will be updated automatically by river/init
 edge-margin-vertical = -$bar_height
-edge-margin-horizontal = $gaps
+edge-margin-horizontal = $bar_right
 max-height = $bar_height
 min-width = $bar_width
 border-size = $border_size
@@ -84,12 +71,12 @@ body-color = ${text_color}ff
 $(tail -n +13 $file)\
 " > $file
 
-	# tofi
-	file="$HOME/.config/tofi/riverbed-autogen"
-	echo "\
+# tofi
+file="$HOME/.config/tofi/riverbed-autogen"
+echo "\
 #These lines will be updated automatically by river/init
 margin-top = $gaps
-margin-right = $gaps
+margin-right = $bar_right 
 height = $bar_height
 width = $bar_width
 border-width = $border_size
@@ -99,98 +86,108 @@ border-color = #${border_color}
 #END\
 " > $file
 
-	# gtklock
-	file="$HOME/.config/gtklock/riverbed-autogen.css"
-	echo "\
+# gtklock
+file="$HOME/.config/gtklock/riverbed-autogen.css"
+echo "\
 /* These lines will be updated automatically by river/init */
 button, entry{
-	padding: ${gaps}px
+padding: ${gaps}px
 }
 /* END*/\
 " > $file
 }
 
 internal_settings() {
-	# Apply user settings
-	riverctl background-color 0x$background_color
-	riverctl spawn "wbg $background"
-	riverctl border-color-focused 0x$border_color
-	riverctl border-color-unfocused 0x$border_color_inactive
-	riverctl border-width $border_size
-	riverctl xcursor-theme "$cursor_theme"
+# Apply user settings
+riverctl background-color 0x$background_color
+riverctl spawn "wbg $background"
+riverctl border-color-focused 0x$border_color
+riverctl border-color-unfocused 0x$border_color_inactive
+riverctl border-width $border_size
+riverctl xcursor-theme "$cursor_theme"
 }
 
 # Wob deamon
 setup_deamon() {
-	location="$XDG_RUNTIME_DIR/wob"
-	ps | grep -m 1 "[0-9] tail -f -s 0 $location/$1" | sed 's/^ //g' | cut -d" " -f1 | xargs kill
-	mkdir "$location"
-	mkfifo "$location/$1"
-	( tail -f -s 0 "$location/$1" | wob ) &
+location="$XDG_RUNTIME_DIR/wob"
+ps | grep -m 1 "[0-9] tail -f -s 0 $location/$1" | sed 's/^ //g' | cut -d" " -f1 | xargs kill
+mkdir "$location"
+mkfifo "$location/$1"
+( tail -f -s 0 "$location/$1" | wob ) &
 }
 
 # Auto start all applications
 autostart() {
-	cat "$exec_location/autostart" | while read application
-	do
-		riverctl spawn "$application"
-	done
+cat "$exec_location/autostart" | while read application
+do
+	riverctl spawn "$application"
+done
 }
 
 defaults() {
-	# Set sane default rules
-	riverctl rule-add -app-id lxqt-policykit-agent float
-	riverctl rule-add -app-id popup float
-	riverctl rule-add -app-id "Gimp*" no-float
-	riverctl default-attach-mode bottom
-	riverctl default-layout "$layout_namespace"
-	killall "$layout_engine"
-	riverctl spawn "$layout_engine"
+# Set sane default rules
+riverctl rule-add -app-id lxqt-policykit-agent float
+riverctl rule-add -app-id popup float
+riverctl rule-add -app-id "Gimp*" no-float
+riverctl default-attach-mode bottom
+riverctl default-layout "$layout_namespace"
 
-	riverctl map-switch normal lid close spawn 'gtklock -d && wlr-randr --output eDP-1 --off'
-	riverctl map-switch locked lid close spawn 'wlr-randr --output eDP-1 --off'
-	riverctl map-switch normal lid open spawn 'wlr-randr --output eDP-1 --on'
-	riverctl map-switch locked lid open spawn 'wlr-randr --output eDP-1 --on'
+riverctl map-switch normal lid close spawn 'gtklock -d && wlr-randr --output eDP-1 --off'
+riverctl map-switch locked lid close spawn 'wlr-randr --output eDP-1 --off'
+riverctl map-switch normal lid open spawn 'wlr-randr --output eDP-1 --on'
+riverctl map-switch locked lid open spawn 'wlr-randr --output eDP-1 --on'
 }
 
 customs() {
-	# Apply custom user rules
-	cat "$exec_location/custom" | while read line
-	do
-		[ -z "$line" ] || riverctl $line
-	done
+# Apply custom user rules
+cat "$exec_location/custom" | while read line
+do
+	[ -z "$line" ] || riverctl $line
+done
 } 
 
 reload_configs() {
-	# Retrieve user settings
-	while read line
-	do
-		eval $line
-	done < "$exec_location/variables"
+# Retrieve user settings
+while read line
+do
+	eval $line
+done < "$exec_location/variables"
 
-	source "$exec_location/keybinds"
+source "$exec_location/keybinds"
 
-	# Calculate derived settings
-	display_height=$(wlr-randr --json | jq '.[].modes.[].height')
-	display_width=$(wlr-randr --json | jq '.[].modes.[].width')
-	bar_width=$(echo "($display_width - 2 * $gaps) * (1 - $main_ratio) + $gaps * ($main_ratio - 1)" | bc -l | sed 's/\..*$//g')
-	
-	internal_settings &
-	defaults &
-	external_settings &
-	customs &
-	wait
-	setup_deamon brightness
-	setup_deamon volume
+# Calculate derived settings
+display_height=$(wlr-randr --json | jq '.[].modes.[].height')
+display_width=$(wlr-randr --json | jq '.[].modes.[].width')
+
+
+if [ "$layout" = 'runoff' ]; then
+	bar_width=$(echo "($display_width - (3 * $gaps)) * (1 - $main_ratio)" | bc -l | sed 's/\..*$//g')
+	bar_left=$(($display_width - $bar_width - $gaps))
+	bar_right=$gaps
+elif [ "$layout" = 'dual' ]; then
+	bar_width=$(echo "($display_width - (3 * $gaps)) * $main_ratio " | bc -l | sed 's/\..*$//g')
+	bar_left=$((($display_width - $bar_width + $gaps) / 2 - $gaps))
+	bar_right=$(((($display_width - $bar_width + $gaps) / 2)))
+fi
+
+internal_settings &
+defaults &
+external_settings &
+customs &
+wait
+setup_deamon brightness
+setup_deamon volume
+riverctl send-layout-cmd luatile 'update_variables()'
 }
 
 if [ "$1" = "reload" ]; then
-	reload_configs
-	killall fnott
-	riverctl spawn fnott
+reload_configs
+killall fnott
+riverctl spawn fnott
 else
-	riverctl spawn gtklock
-	reload_configs
-	autostart
+riverctl spawn gtklock
+reload_configs
+autostart
+riverctl spawn "$layout_engine"
 fi
 
