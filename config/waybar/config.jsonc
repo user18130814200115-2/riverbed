@@ -11,6 +11,7 @@
 	"modules-right": ["bluetooth","pulseaudio","network","battery"],
 
 	"bluetooth": {
+		"tooltip": false,
 		"format":"",
 		"format-off":"󰂲",
 		"format-on":"",
@@ -18,17 +19,18 @@
 	},
 
 	"pulseaudio": {
-		"on-click":"pavucontrol-qt",
-       "format":"{icon}",
-       "format-muted":"",
-       "format-icons": {
-           "default": [
-               "",
-               "",
-               ""
-            ]
-        }
-    },
+		"tooltip": false,
+		"on-click":"konsole -e alsamixer",
+		"format":"{icon}",
+		"format-muted":"",
+		"format-icons": {
+			"default": [
+				"",
+				"",
+				""
+			]
+		}
+	},
 
 	"river/tags": {
 		"num-tags": 9,
@@ -36,39 +38,41 @@
 	},
 
 	"network": {
+		"tooltip": false,
 		"on-click":"konsole -e nmtui",
-       "format-wifi":" {icon}",
-       "format-ethernet":" ",
-       "format-disconnected":"󰌙",
-       "format-icons": [
-           "󰤯",
-           "󰤟",
-           "󰤢",
-           "󰤢",
-           "󰤨"
-        ]
-    },
+		"format-wifi":" {icon}",
+		"format-ethernet":" ",
+		"format-disconnected":"󰌙",
+		"format-icons": [
+			"󰤯",
+			"󰤟",
+			"󰤢",
+			"󰤢",
+			"󰤨"
+		]
+	},
 
-   "battery": {
-       "states": {
-           "warning": 15,
-           "critical": 5
-        },
-       "format":"{icon} {capacity}%",
-       "format-charging":"󰂄 {capacity}%",
-       "format-plugged":"󰂄 {capacity}%",
-       "format-icons": [
-           "󰂎",
-           "󰁺",
-           "󰁻",
-           "󰁼",
-           "󰁽",
-           "󰁾",
-           "󰁿",
-           "󰂀",
-           "󰂁",
-           "󰂂",
-           "󰁹"
-        ]
-    }
+	"battery": {
+		"tooltip": false,
+		"states": {
+			"warning": 15,
+			"critical": 5
+		},
+		"format":"{icon} {capacity}%",
+		"format-charging":"󰂄 {capacity}%",
+		"format-plugged":"󰂄 {capacity}%",
+		"format-icons": [
+			"󰂎",
+			"󰁺",
+			"󰁻",
+			"󰁼",
+			"󰁽",
+			"󰁾",
+			"󰁿",
+			"󰂀",
+			"󰂁",
+			"󰂂",
+			"󰁹"
+		]
+	}
 }
