@@ -53,6 +53,10 @@ Riverbed uses the following programs:
 I personally use the KDE suite of applications, but this can easily be
 substituted by with GNOME or DE agnostic applications.
 
+If you do use the kde applications, consider adding `qt6ct` and configuring it
+to use the `xdg-desktop-portal`. Alternatively, you can change the
+`QT_QPA_PLATFORMTHEME` to `xdgdesktopportal` in `home/profile`.
+
 ## Alpine-specific
 
 This setup is intended for use on Alpine Linux and its derivatives, I currently
