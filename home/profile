@@ -1,0 +1,9 @@
+export PATH="$HOME/.local/bin:$PATH"
+export EDITOR="vim"
+
+export QT_QPA_PLATFORM=wayland
+#export QT_QPA_PLATFORMTHEME=xdgdesktopportal
+export QT_QPA_PLATFORMTHEME=qt6ct
+
+[ "$(tty)" = "/dev/tty1" ] && exec \
+	"$HOME/.config/river/launch"
