@@ -1,0 +1,5 @@
+#!/bin/sh
+
+[ -d ".build" ] || mkdir .build
+lualatex --output-directory=.build "$1"
+cp .build/*.pdf ./
