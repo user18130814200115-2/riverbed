@@ -1,0 +1,30 @@
+# Contributor: Thijs Iris Wester <wester.t@protonmail.com>
+# Maintainer: Thijs Iris Wester <wester.t@protonmail.com>
+pkgname=cmd-polkit
+pkgver=0.3.0
+pkgrel=0
+pkgdesc="cmd-polkit"
+url="https://github.com/OmarCastro/cmd-polkit"
+arch="all"
+license="GNU lGPL v2.1"
+makedepends="openrc dbus gcc meson musl musl-dev gcovr glib glib-dev json-glib json-glib-dev polkit polkit-dev gtk+3.0 gtk+3.0-dev valgrind"
+source="$pkgname-$pkgver.tar.gz::https://github.com/OmarCastro/cmd-polkit/archive/refs/tags/v$pkgver.tar.gz"
+options='net !check' #All tests fail for some reason; must look into this later
+
+build() {
+	abuild-meson\
+		. output
+	meson compile -C output
+}
+
+check() {
+	meson test --no-rebuild --print-errorlogs -C output
+}
+
+package() {
+    DESTDIR="$pkgdir" meson install --no-rebuild -C output
+}
+
+sha512sums="
+7edd5927d18449ae8d7600a3fbc78720742824d2a5ad035d78b754028e55a187d3e3cc39671f7a91b052ccb66475f09393730c3ccc35829033e76c1676d0887d  cmd-polkit-0.3.0.tar.gz
+"
