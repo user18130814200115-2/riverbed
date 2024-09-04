@@ -12,7 +12,19 @@ console installation
 The files in the `config` folder go into `$XDG_CONFIG_HOME` except for the
 `gnupg` folder which goes to `$HOME/.gnupg`.
 
-Files in the etc folder must be moved by a privileged user into `/etc/`.
+Files in the etc folder must be moved by a privileged user into `/etc/`. Though
+they are optional.
+
+The files in local must be moved to `$HOME/.local/`. This folder so-far only
+contains a few minor scripts and one major one.
+
+- `tofi-polkit-agent` must be installed if you want gui privilege escalation to
+  work, for instance for authenticating keyring and such.
+-`nmtui` and `alsamixer` are simple wrapper scripts to run the respective
+  programs without color
+- `latex` is a helper script which I use for compiling latex documents, It
+  hides the auxiliary files in a folder called `.build`. Uses lualatex by
+  default. 
 
 ### !!! WARNING !!!
 
@@ -29,10 +41,9 @@ Riverbed uses the following programs
 | river | Compositor |
 | river-luatile | Layout Manager |
 | way bar | Status bar |
-| tofi | Launcher |
+| tofi | Launcher, Polkit-agent * pinentry |
 | fnott | Notifications |
 | brightnessctl | Brightness management |
-| lxqt-policykit | GUI Privilege escalation |
 | grimshot | Screenshots |
 | doas | CLI privilege escalation |
 | pass | Password and OTP manager |
