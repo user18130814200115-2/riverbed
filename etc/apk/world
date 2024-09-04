@@ -10,10 +10,12 @@ falkon
 capitaine-cursors
 grimshot
 consolekit2
-lxqt-policykit
 wlr-randr
 pass-otp
 seatd-launch
 wob
 wbg
+xdg-desktop-portal
+rtkit
+xdg-desktop-portal-lxqt
 zsh-syntax-highlighting
