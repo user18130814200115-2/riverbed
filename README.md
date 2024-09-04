@@ -9,14 +9,15 @@ environment.
 This repository is designed for installation on top of an existing alpine
 console installation
 
-The files in the `config` folder go into `$XDG_CONFIG_HOME` except for the
-`gnupg` folder which goes to `$HOME/.gnupg`.
+All files in the `home` folder should be placed in your `$HOME`, though they
+each need to be prepended with a dot. So `config` goes to `.config`, `profile`
+goes to `.profile` etcetera.
 
 Files in the etc folder must be moved by a privileged user into `/etc/`. Though
 they are optional.
 
-The files in local must be moved to `$HOME/.local/`. This folder so-far only
-contains a few minor scripts and one major one.
+The `local/bin/` folder so-far only contains a few minor scripts and one major
+one.
 
 - `tofi-polkit-agent` must be installed if you want gui privilege escalation to
   work, for instance for authenticating keyring and such.
@@ -35,7 +36,8 @@ divers, etcetera.
 
 ### Programs
 
-Riverbed uses the following programs
+Riverbed uses the following programs:
+
 | program | Purpose |
 |----------------|--------------------------|
 | river | Compositor |
