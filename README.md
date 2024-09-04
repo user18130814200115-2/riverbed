@@ -16,11 +16,13 @@ goes to `.profile` etcetera.
 Files in the etc folder must be moved by a privileged user into `/etc/`. Though
 they are optional.
 
-The `local/bin/` folder so-far only contains a few minor scripts and one major
-one.
+The files in `local/bin/` need to be given permission to be executed `chmod +x
+local/bin/*`. The folder so-far contains the following scripts.
 
 - `tofi-polkit-agent` must be installed if you want gui privilege escalation to
   work, for instance for authenticating keyring and such.
+- screenselect A tofi enabled program that allows you to select an output, used
+  by xdg-desktop-portal-wlr
 -`nmtui` and `alsamixer` are simple wrapper scripts to run the respective
   programs without color
 - `latex` is a helper script which I use for compiling latex documents, It
