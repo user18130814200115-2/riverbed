@@ -12,9 +12,12 @@ grimshot
 consolekit2
 wlr-randr
 pass-otp
+pipewire
+pipewire-pulse
 seatd-launch
-wob
 wbg
+wob
+wireplumber
 xdg-desktop-portal
 rtkit
 xdg-desktop-portal-lxqt
