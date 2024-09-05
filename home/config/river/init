@@ -6,10 +6,6 @@ external_settings() {
 # Tell the various components of the desktop relevant information
 
 riverctl spawn 'dbus-update-activation-environment XDG_CURRENT_DESKTOP WAYLAND_DISPLAY QT_STYLE_OVERRIDE QT_QPA_PLATFORM'
-riverctl spawn pipewire
-riverctl spawn pipewire-pulse
-riverctl spawn wireplumber
-
 
 # luatile
 file="$HOME/.config/river-luatile/riverbed-autogen.lua"
@@ -203,6 +199,10 @@ else
 	riverctl spawn gtklock
 	reload_configs
 	autostart
+
+	riverctl spawn pipewire
+	riverctl spawn pipewire-pulse
+	riverctl spawn wireplumber
 	riverctl spawn "$layout_engine"
 fi
 
