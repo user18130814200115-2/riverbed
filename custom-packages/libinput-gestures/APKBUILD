@@ -1,0 +1,24 @@
+# Contributor: Thijs Iris Wester <wester.t@protonmail.com>
+# Maintainer: Thijs Iris Wester <wester.t@protonmail.com>
+pkgname=libinput-gestures
+pkgver=2.77
+pkgrel=0
+pkgdesc="Actions gestures on your touchpad using libinput"
+url="https://github.com/bulletmark/$pkgname"
+arch="all"
+license="GPL-3.0-or-later"
+makedepends="ruff shellcheck vermin"
+depends="libinput python3 libinput-tools"
+source="$pkgname-$pkgver.tar.gz::$url/archive/$pkgver.tar.gz"
+
+package() {
+	  make DESTDIR="$pkgdir/" install
+}
+
+check() {
+	make check
+}
+
+sha512sums="
+a907de31f106149266c5867e2e246a5bf7650d5556ea221eb612e42a8e7771e1fa4513908aa1b4f55974f6a801962db3ed219f4819166c037147fb43048b40f9  libinput-gestures-2.77.tar.gz
+"
