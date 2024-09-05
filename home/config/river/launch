@@ -1,4 +1,11 @@
 #!/bin/sh
 
 export XDG_RUNTIME_DIR=$(mkrundir)
+export XDG_CURRENT_DESKTOP=lxqt
+
+export QT_QPA_PLATFORM=wayland
+export QT_QPA_PLATFORMTHEME=xdgdesktopportal
+export QT_STYLE_OVERRIDE=kvantum
+
+
 ck-launch-session dbus-launch --sh-syntax --exit-with-session seatd-launch -- river

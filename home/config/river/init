@@ -5,7 +5,7 @@ exec_location="$HOME/.config/river"
 external_settings() {
 # Tell the various components of the desktop relevant information
 
-riverctl spawn 'dbus-update-activation-environment XDG_CURRENT_DESKTOP WAYLAND_DISPLAY QT_STYLE_OVERRIDE=kvantum QT_QPA_PLATFORM'
+riverctl spawn 'dbus-update-activation-environment XDG_CURRENT_DESKTOP WAYLAND_DISPLAY QT_STYLE_OVERRIDE QT_QPA_PLATFORM'
 riverctl spawn pipewire
 riverctl spawn pipewire-pulse
 riverctl spawn wireplumber
