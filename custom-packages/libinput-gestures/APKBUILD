@@ -5,14 +5,22 @@ pkgver=2.77
 pkgrel=0
 pkgdesc="Actions gestures on your touchpad using libinput"
 url="https://github.com/bulletmark/$pkgname"
-arch="all"
+arch="noarch"
 license="GPL-3.0-or-later"
 makedepends="ruff shellcheck vermin"
 depends="libinput python3 libinput-tools"
 source="$pkgname-$pkgver.tar.gz::$url/archive/$pkgver.tar.gz"
+builddir="$srcdir/$pkgname-$pkgver"
+subpackages="$pkgname-doc"
 
 package() {
-	  make DESTDIR="$pkgdir/" install
+	install -D -m 755 -t ${pkgdir}/usr/bin $pkgname-setup
+	install -D -m 755 -t ${pkgdir}/usr/bin $pkgname
+	install -D -m 644 -t ${pkgdir}/usr/share/applications $pkgname.desktop
+	install -D -m 644 -t ${pkgdir}/usr/share/icons $pkgname.svg
+	install -D -m 644 -t ${pkgdir}/etc $pkgname.conf
+	install -D -m 644 -t ${pkgdir}/usr/share/doc README.md
+	echo yes
 }
 
 check() {
