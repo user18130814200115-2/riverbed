@@ -128,9 +128,9 @@ function handle_layout(args)
 			local side_h = args.height / math.floor((args.count + columns - 1 - i % columns) / columns) - gaps * 2
 
 			table.insert(retval, {
-				(2 * gaps + side_w) * (i % columns) + gaps,
+				(side_w + gaps + gaps * 2 / columns) * (i % columns) + gaps,
 				(2 * gaps + side_h) * math.floor(i / columns) + gaps,
-				side_w,
+				side_w + 2 * gaps / columns,
 				side_h,
 			})
 		end
