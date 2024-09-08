@@ -131,7 +131,7 @@ function handle_layout(args)
 				(side_w + gaps + gaps * 2 / columns) * (i % columns) + gaps,
 				(2 * gaps + side_h) * math.floor(i / columns) + gaps,
 				side_w + 2 * gaps / columns,
-				side_h,
+				side_h + gaps *2 / 3,
 			})
 		end
 	end
