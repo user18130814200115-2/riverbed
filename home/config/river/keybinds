@@ -1,9 +1,9 @@
 #!/bin/sh
 
-riverctl map normal Super R spawn "riverbedctl reload_configs"
+riverctl map normal Super+Shift R spawn "riverbedctl reload_configs"
 riverctl map normal Super G spawn "riverbedctl layout=grid"
 riverctl map normal Super D spawn "riverbedctl layout=dual"
-riverctl map normal Super M spawn "riverbedctl layout=runoff"
+riverctl map normal Super R spawn "riverbedctl layout=runoff"
 
 riverctl map normal Super Return spawn konsole
 riverctl map normal Super Space spawn 'tofi-drun | xargs riverctl spawn'
