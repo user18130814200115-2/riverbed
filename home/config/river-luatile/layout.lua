@@ -28,16 +28,6 @@ function set_layout(input)
 		layout = input
 	end
 end
-function set_columns(input)
-	if input ~= nil then
-		if string.find(input, '[+-]') ~= nil then
-			local func = load("columns = columns" .. input)
-			func()
-		else
-			columns = input
-		end
-	end
-end
 
 update_variables()
 
