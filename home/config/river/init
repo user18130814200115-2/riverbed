@@ -81,8 +81,8 @@ bar_padding=$(($border_size - 4))
 ;END
 $(tail -n +7 $file)\
 " > $file
-setup_deamon brightness
-setup_deamon volume
+setup_deamon brightness &
+setup_deamon volume &
 
 # fnott
 file="$HOME/.config/fnott/fnott.ini"
@@ -153,12 +153,12 @@ setup_deamon() {
 	location="$XDG_RUNTIME_DIR/wob"
 	ps | grep -m 1 "[0-9] tail -f -s 0 $location/$1" | sed 's/^ //g' | cut -d" " -f1 | xargs kill
 	[ -d "$location" ] || mkdir "$location"
-	[ -z "$location/$1" ] && mkfifo "$location/$1"
+	mkfifo "$location/$1"
 	( tail -f -s 0 "$location/$1" | wob ) &
-	}
+}
 
-	# Auto start all applications
-	autostart() {
+# Auto start all applications
+autostart() {
 	cat "$exec_location/autostart" | while read application
 	do
 		riverctl spawn "$application"
@@ -186,6 +186,10 @@ customs() {
 	done
 } 
 
+reload_keybinds() {
+	source "$exec_location/keybinds"
+}
+
 reload_configs() {
 	# Retrieve user settings
 	while read line
@@ -193,8 +197,7 @@ reload_configs() {
 		eval $line
 	done < "$exec_location/variables"
 
-	source "$exec_location/keybinds"
-
+	reload_keybinds &
 	internal_settings &
 	defaults &
 	external_settings &
@@ -219,8 +222,8 @@ riverctl spawn river-luatile
 autostart
 
 # Setup listener
-[ -z "$XDG_RUNTIME_DIR/riverbed" ] && mkfifo "$XDG_RUNTIME_DIR/riverbed"
-tail -f "$XDG_RUNTIME_DIR/riverbed" | while read line; do
+mkfifo "$XDG_RUNTIME_DIR/riverbed"
+tail -f -s 0 "$XDG_RUNTIME_DIR/riverbed" | while read line; do
 	echo $line
 	eval ${line}
 	internal_settings &
