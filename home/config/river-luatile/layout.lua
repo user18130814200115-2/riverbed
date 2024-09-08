@@ -1,4 +1,15 @@
 local maximize = false
+local overview = false
+
+-- defaults
+gaps = 5
+main_ratio = 0.55
+display_height = 1080
+bar_height = 48
+layout = 'runoff'
+columns = 3
+dynamic_columns = true
+
 
 function update_variables()
 	dofile('/home/user/.config/river-luatile/riverbed-autogen.lua')
@@ -6,6 +17,26 @@ end
 
 function toggle_maximize()
 	maximize = not maximize
+end
+
+function toggle_overview()
+	overview = not overview
+end
+
+function set_layout(input)
+	if input ~= nil then
+		layout = input
+	end
+end
+function set_columns(input)
+	if input ~= nil then
+		if string.find(input, '[+-]') ~= nil then
+			local func = load("columns = columns" .. input)
+			func()
+		else
+			columns = input
+		end
+	end
 end
 
 update_variables()
@@ -22,12 +53,29 @@ function handle_layout(args)
 	if maximize then
 		table.insert(retval, {
 			gaps,
-			gaps - bar_height,
+			gaps,
 			(args.width - gaps * 2),
-			args.height + bar_height - gaps * 2
+			args.height - gaps * 2
 		})
 		for i = 0, (args.count - 2) do
 			table.insert(retval, {0,display_height,0,0})
+		end
+		return retval
+	end
+	if overview then
+		local columns = math.ceil(math.sqrt(args.count))
+		local gaps = gaps * 5
+		local side_w = args.width / math.min(args.count, columns) - gaps * 2
+
+		for i = 0, (args.count - 1) do
+			local side_h = args.height / math.floor((args.count + columns - 1 - i % columns) / columns) - gaps * 2
+
+			table.insert(retval, {
+				(2 * gaps + side_w) * (i % columns) + gaps,
+				(2 * gaps + side_h) * math.floor(i / columns) + gaps,
+				side_w,
+				side_h,
+			})
 		end
 		return retval
 	end
@@ -79,6 +127,22 @@ function handle_layout(args)
 					side_h,
 				})
 			end
+		end
+	elseif layout == 'grid' then
+		if dynamic_columns then
+			columns = math.ceil(math.sqrt(args.count))
+		end
+		local side_w = args.width / math.min(args.count, columns) - gaps * 2
+
+		for i = 0, (args.count - 1) do
+			local side_h = args.height / math.floor((args.count + columns - 1 - i % columns) / columns) - gaps * 2
+
+			table.insert(retval, {
+				(2 * gaps + side_w) * (i % columns) + gaps,
+				(2 * gaps + side_h) * math.floor(i / columns) + gaps,
+				side_w,
+				side_h,
+			})
 		end
 	end
 	return retval
