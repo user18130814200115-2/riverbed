@@ -1,6 +1,6 @@
 #!/bin/sh
 
-riverctl map normal Super R spawn "$HOME/.config/river/init reload"
+riverctl map normal Super R spawn "riverbedctl"
 
 riverctl map normal Super Return spawn konsole
 riverctl map normal Super Space spawn 'tofi-drun | xargs riverctl spawn'

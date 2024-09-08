@@ -6,3 +6,6 @@ set-repeat 40 300
 input pointer-9610-30-Pine64_Pinebook_Pro_Touchpad tap enabled
 input pointer-9610-30-Pine64_Pinebook_Pro_Touchpad natural-scroll enabled
 keyboard-layout -options compose:caps us
+
+spawn 'gsettings set org.gnome.desktop.interface icon-theme breeze'
+spawn 'gsettings set org.gnome.desktop.interface icon-theme Breeze'

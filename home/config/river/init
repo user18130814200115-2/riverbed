@@ -3,8 +3,29 @@
 exec_location="$HOME/.config/river"
 
 external_settings() {
+
+	# Calculate derived settings
+	display_height=$(wlr-randr --json | jq '.[].modes.[].height')
+	display_width=$(wlr-randr --json | jq '.[].modes.[].width')
+
+
+	if [ "$layout" = 'runoff' ]; then
+		bar_width=$(echo "($display_width - (3 * $gaps)) * (1 - $main_ratio)" | bc -l | sed 's/\..*$//g')
+		bar_left=$(($display_width - $bar_width - $gaps))
+		bar_right=$gaps
+	elif [ "$layout" = 'dual' ]; then
+		bar_width=$(echo "($display_width - (3 * $gaps)) * $main_ratio " | bc -l | sed 's/\..*$//g')
+		bar_left=$((($display_width - $bar_width + $gaps) / 2 - $gaps))
+		bar_right=$(((($display_width - $bar_width + $gaps) / 2)))
+	elif [ "$layout" = 'grid' ]; then
+		bar_width=$(echo "($display_width - (2 * $gaps))" | bc -l | sed 's/\..*$//g')
+		bar_left=$gaps
+		bar_right=$gaps
+	fi
+
 # Tell the various components of the desktop relevant information
 
+# Dbus
 riverctl spawn 'dbus-update-activation-environment XDG_CURRENT_DESKTOP WAYLAND_DISPLAY QT_STYLE_OVERRIDE QT_QPA_PLATFORM'
 
 # luatile
@@ -16,7 +37,10 @@ main_ratio = $main_ratio
 display_height = $display_height
 bar_height = $bar_height
 layout = '$layout'
+columns = $columns
+dynamic_columns = $dynamic_columns
 " > $file
+riverctl send-layout-cmd luatile 'update_variables()'
 
 # waybar
 file="$HOME/.config/waybar/riverbed-autogen.css"
@@ -57,6 +81,8 @@ bar_padding=$(($border_size - 4))
 ;END
 $(tail -n +7 $file)\
 " > $file
+setup_deamon brightness
+setup_deamon volume
 
 # fnott
 file="$HOME/.config/fnott/fnott.ini"
@@ -75,6 +101,8 @@ body-color = ${text_color}ff
 #END
 $(tail -n +13 $file)\
 " > $file
+killall fnott
+riverctl spawn fnott
 
 # tofi
 file="$HOME/.config/tofi/riverbed-autogen"
@@ -104,6 +132,7 @@ button, entry{
 }
 window {
 	color: #$text_color;
+	background-image: url(\"$background\");
 }
 " > $file
 }
@@ -111,6 +140,7 @@ window {
 internal_settings() {
 	# Apply user settings
 	riverctl background-color 0x$background_color
+	killall wbg
 	riverctl spawn "wbg $background"
 	riverctl border-color-focused 0x$border_color
 	riverctl border-color-unfocused 0x$border_color_inactive
@@ -120,28 +150,27 @@ internal_settings() {
 
 # Wob deamon
 setup_deamon() {
-location="$XDG_RUNTIME_DIR/wob"
-ps | grep -m 1 "[0-9] tail -f -s 0 $location/$1" | sed 's/^ //g' | cut -d" " -f1 | xargs kill
-[ -d "$location" ] || mkdir "$location"
-mkfifo "$location/$1"
-( tail -f -s 0 "$location/$1" | wob ) &
-}
+	location="$XDG_RUNTIME_DIR/wob"
+	ps | grep -m 1 "[0-9] tail -f -s 0 $location/$1" | sed 's/^ //g' | cut -d" " -f1 | xargs kill
+	[ -d "$location" ] || mkdir "$location"
+	[ -z "$location/$1" ] && mkfifo "$location/$1"
+	( tail -f -s 0 "$location/$1" | wob ) &
+	}
 
-# Auto start all applications
-autostart() {
-cat "$exec_location/autostart" | while read application
-do
-	riverctl spawn "$application"
-done
+	# Auto start all applications
+	autostart() {
+	cat "$exec_location/autostart" | while read application
+	do
+		riverctl spawn "$application"
+	done
 }
 
 defaults() {
 	# Set sane default rules
-	riverctl rule-add -app-id xdg-desktop-portal-lxqt float
 	riverctl rule-add -app-id popup float
 	riverctl rule-add -app-id "Gimp*" no-float
 	riverctl default-attach-mode bottom
-	riverctl default-layout "$layout_namespace"
+	riverctl default-layout luatile
 
 	riverctl map-switch normal lid close spawn 'gtklock -d && wlr-randr --output eDP-1 --off'
 	riverctl map-switch locked lid close spawn 'wlr-randr --output eDP-1 --off'
@@ -155,9 +184,9 @@ customs() {
 	do
 		[ -z "$line" ] || riverctl $line
 	done
-	} 
+} 
 
-	reload_configs() {
+reload_configs() {
 	# Retrieve user settings
 	while read line
 	do
@@ -166,43 +195,35 @@ customs() {
 
 	source "$exec_location/keybinds"
 
-	# Calculate derived settings
-	display_height=$(wlr-randr --json | jq '.[].modes.[].height')
-	display_width=$(wlr-randr --json | jq '.[].modes.[].width')
-
-
-	if [ "$layout" = 'runoff' ]; then
-		bar_width=$(echo "($display_width - (3 * $gaps)) * (1 - $main_ratio)" | bc -l | sed 's/\..*$//g')
-		bar_left=$(($display_width - $bar_width - $gaps))
-		bar_right=$gaps
-	elif [ "$layout" = 'dual' ]; then
-		bar_width=$(echo "($display_width - (3 * $gaps)) * $main_ratio " | bc -l | sed 's/\..*$//g')
-		bar_left=$((($display_width - $bar_width + $gaps) / 2 - $gaps))
-		bar_right=$(((($display_width - $bar_width + $gaps) / 2)))
-	fi
-
 	internal_settings &
 	defaults &
 	external_settings &
 	customs &
-	wait
-	setup_deamon brightness
-	setup_deamon volume
-	riverctl send-layout-cmd luatile 'update_variables()'
 }
 
-if [ "$1" = "reload" ]; then
-	reload_configs
-	killall fnott
-	riverctl spawn fnott
-else
-	riverctl spawn gtklock
-	reload_configs
-	autostart
 
-	riverctl spawn pipewire
-	riverctl spawn pipewire-pulse
-	riverctl spawn wireplumber
-	riverctl spawn "$layout_engine"
-fi
+# MAIN EXEC Line
+
+riverctl spawn gtklock
+
+reload_configs
+
+riverctl spawn waybar
+riverctl spawn tofi-polkit-agent
+riverctl spawn libinput-gestures
+riverctl spawn pipewire
+riverctl spawn pipewire-pulse
+riverctl spawn wireplumber
+riverctl spawn river-luatile
+
+autostart
+
+# Setup listener
+[ -z "$XDG_RUNTIME_DIR/riverbed" ] && mkfifo "$XDG_RUNTIME_DIR/riverbed"
+tail -f "$XDG_RUNTIME_DIR/riverbed" | while read line; do
+	echo $line
+	eval ${line}
+	internal_settings &
+	external_settings &
+done
 
