@@ -122,16 +122,16 @@ function handle_layout(args)
 		if dynamic_columns then
 			columns = math.ceil(math.sqrt(args.count))
 		end
-		local side_w = args.width / math.min(args.count, columns) - gaps * 2
+		local side_w = args.width / math.min(args.count, columns)
 
 		for i = 0, (args.count - 1) do
-			local side_h = args.height / math.floor((args.count + columns - 1 - i % columns) / columns) - gaps * 2
+			local side_h = args.height / math.floor((args.count + columns - 1 - i % columns) / columns)
 
 			table.insert(retval, {
-				(side_w + gaps + gaps * 2 / columns) * (i % columns) + gaps,
-				(2 * gaps + side_h) * math.floor(i / columns) + gaps,
-				side_w + 2 * gaps / columns,
-				side_h + gaps *2 / 3,
+				(side_w) * (i % columns) + gaps,
+				(side_h) * math.floor(i / columns) + gaps,
+				side_w - 2 * gaps,
+				side_h - 2 * gaps,
 			})
 		end
 	end
