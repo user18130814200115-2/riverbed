@@ -59,8 +59,8 @@ install_configs() {
 	install -D -b -t "$config_dir" $source_dir/libinput-gestures.conf
 
 	inform "Installing configuration for gnupg"
-	install -D -b -t "$HOME/gnupg" "./home/gnupg/gpg-agent.conf"
-	install -D -b -t "$HOME/gnupg" -m 744 "./home/gnupg/pinentry-tofi"
+	install -D -b -t "$HOME/.gnupg" "./home/gnupg/gpg-agent.conf"
+	install -D -b -t "$HOME/.gnupg" -m 744 "./home/gnupg/pinentry-tofi"
 
 	inform "Installing custom scripts"
 	install -D -b -t "$HOME/.local/bin" -m 744 home/local/bin/*
