@@ -89,6 +89,7 @@ install_packages() {
 
 compile_packages() {
 	inform "Attempting to compile custom packages"
+	$root apk add abuild
 	riverbed_directory=$(pwd)
 	cd custom-packages
 	ls | while read line; do
@@ -105,7 +106,8 @@ compile_packages() {
 	done
 }
 
-warn "This script is not production ready"
+warn "This script is not production ready, press ENTER to continue"
+read
 if [ $(which doas) ]; then
 	inform "Found doas for privilege escalation"
 	root=doas
