@@ -6,36 +6,7 @@ environment.
 
 ## Installation
 
-This repository is designed for installation on top of an existing alpine edge
-console installation. Make sure the [testing repository is enabled on your system](https://wiki.alpinelinux.org/wiki/Repositories#Using_testing_repository).
-
-All files in the `home` folder should be placed in your `$HOME`, though they
-each need to be prepended with a dot. So `config` goes to `.config`, `profile`
-goes to `.profile` etcetera.
-
-Files in the etc folder must be moved by a privileged user into `/etc/`. Though
-they are optional.
-
-The files in `local/bin/` need to be given permission to be executed `chmod +x
-local/bin/*`. The folder so-far contains the following scripts.
-
-- `tofi-polkit-agent` must be installed if you want gui privilege escalation to
-  work, for instance for authenticating keyring and such.
-- screenselect A tofi enabled program that allows you to select an output, used
-  by xdg-desktop-portal-wlr
--`nmtui` and `alsamixer` are simple wrapper scripts to run the respective
-  programs without color
-- `latex` is a helper script which I use for compiling latex documents, It
-  hides the auxiliary files in a folder called `.build`. Uses lualatex by
-  default. 
-
-### !!! WARNING !!!
-
-You Should **ADD** the contents of `etc/apk/world` to your
-existing apk world file, **DO NOT REPLACE THE FILE OR YOU MAY BREAK YOUR
-INSTALL**.  The file in this repository does not contain a Linux kernel, network
-divers, etcetera.
-
+See [INSTALL.md](INSTALL.md).
 
 ## Usage
 
