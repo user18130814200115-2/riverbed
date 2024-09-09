@@ -20,7 +20,7 @@ install_configs() {
 	inform "Installing configuration for river"
 	source_dir="./home/config/river"
 	install -D -b -t "$config_dir" $source_dir/autostart $source_dir/custom $source_dir/variables
-	install -D -b -t "$config_dir/river" -m 644 $source_dir/init $source_dir/keybinds $source_dir/launch
+	install -D -b -t "$config_dir/river" -m 744 $source_dir/init $source_dir/keybinds $source_dir/launch
 	source_dir="./home/config/river-luatile"
 	install -D -b -t "$config_dir/river-luatile" $source_dir/*
 
@@ -60,10 +60,10 @@ install_configs() {
 
 	inform "Installing configuration for gnupg"
 	install -D -b -t "$HOME/gnupg" "./home/gnupg/gpg-agent.conf"
-	install -D -b -t "$HOME/gnupg" -m 644 "./home/gnupg/pinentry-tofi"
+	install -D -b -t "$HOME/gnupg" -m 744 "./home/gnupg/pinentry-tofi"
 
 	inform "Installing custom scripts"
-	install -D -b -t "$HOME/.local/bin" -m 644 "home/local/bin/*"
+	install -D -b -t "$HOME/.local/bin" -m 744 home/local/bin/*
 
 	inform "Installing shell profile"
 	install -b "home/profile" "$HOME/.profile"
@@ -73,12 +73,14 @@ install_configs() {
 install_packages() {
 	if [ $(which apk) ]; then
 		inform "Attempting to install packages using apk"
-		if [ not $(grep "^[^#].*/testing" /etc/apk/repositories) ]; then
+		if [ "$(grep "^[^#].*/testing" /etc/apk/repositories)" ]; then
+			inform "Testing repository enabled"
+		else
 			inform "Enabling testing repository"
 			$root sh -c "echo http://dl-cdn.alpinelinux.org/alpine/edge/testing >> /etc/apk/repositories"
 		fi
 
-		xargs echo $root apk add < etc/apk/world && compile_packages
+		xargs $root apk add < etc/apk/world && compile_packages
 
 	else
 		warn "Apk tools not found on system. You are on your own when it comes to installing the necessary programs"
