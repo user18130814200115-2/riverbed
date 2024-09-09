@@ -132,8 +132,12 @@ if [ "$(groups | grep abuild)" ]; then
 	inform "$USER is in group abuild"
 else
 	warn "User is not in the abuild group. Adding now"
-	$root usermod -aG abuild user
-	warn "Please re-log for the changes to take effect"
+	if [ $(which usermod) ]; then
+		$root usermod -aG abuild user
+		warn "Please re-log for the changes to take effect"
+	else
+		warn "Automatic adding failed. Please add your user manually by editing /etc/group"
+	fi
 	exit
 fi
 
