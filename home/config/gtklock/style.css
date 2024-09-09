@@ -5,14 +5,12 @@
 }
 
 window {
-	background-image: url("/home/user/Pictures/background.png");
 	background-size: cover;
 	background-repeat: no-repeat;
 	background-position: center;
 	background-color: black;
 	font-size: 14px;
 	font-family: JetBrainsMono Nerd Font;
-	color: black;
 }
 
 entry {
@@ -36,8 +34,6 @@ button:hover label, button:hover{
 button, entry {
 	background-image: none;
 	box-shadow: none;
-	background-color: white;
-	border: solid black 2px;
 	border-radius: 0px
 }
 
