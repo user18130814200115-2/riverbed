@@ -89,7 +89,6 @@ install_packages() {
 
 compile_packages() {
 	inform "Attempting to compile custom packages"
-	$root apk add abuild
 	riverbed_directory=$(pwd)
 	cd custom-packages
 	ls | while read line; do
@@ -101,13 +100,14 @@ compile_packages() {
 
 	ls | while read line; do
 		if [ "$line" == "aarch64" ] || [ "$line" == "x86" ] || [ "$line" == "x86_64" ] || [ "$line" == "armv7" ]; then
-			ls $line/*.apk | xargs $root apk add
+			ls $line/*.apk | xargs $root apk add --allow-untrusted 
 		fi
 	done
 }
 
 warn "This script is not production ready, press ENTER to continue"
 read
+
 if [ $(which doas) ]; then
 	inform "Found doas for privilege escalation"
 	root=doas
@@ -118,6 +118,25 @@ else
 	inform "Did not find doas nor sudo, defaulting to su for privilege escalation"
 	root="su root -c"
 fi
+
+if [ $(which abuild) ]; then
+	inform "Abuild present"
+else
+	inform "Installing abuild"
+	$root apk add abuild
+fi
+
+if [ "$(groups | grep abuild)" ]; then
+	inform "$USER is in group abuild"
+else
+	warn "User is not in the abuild group. Adding now"
+	$root usermod -aG abuild user
+	warn "Please re-log for the changes to take effect"
+	exit
+fi
+
+inform "All checks passed, start installation?"
+read
 
 install_configs
 install_packages
