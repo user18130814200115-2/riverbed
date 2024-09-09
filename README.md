@@ -6,8 +6,8 @@ environment.
 
 ## Installation
 
-This repository is designed for installation on top of an existing alpine
-console installation
+This repository is designed for installation on top of an existing alpine edge
+console installation. Make sure the [testing repository is enabled on your system](https://wiki.alpinelinux.org/wiki/Repositories#Using_testing_repository).
 
 All files in the `home` folder should be placed in your `$HOME`, though they
 each need to be prepended with a dot. So `config` goes to `.config`, `profile`
