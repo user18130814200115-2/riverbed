@@ -101,7 +101,7 @@ compile_packages() {
 
 	ls | while read line; do
 		if [ "$line" == "aarch64" ] || [ "$line" == "x86" ] || [ "$line" == "x86_64" ] || [ "$line" == "armv7" ]; then
-			ls $line/*.apk | xrags apk add
+			ls $line/*.apk | xargs $root apk add
 		fi
 	done
 }
