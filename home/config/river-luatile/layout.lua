@@ -12,7 +12,7 @@ dynamic_columns = true
 
 
 function update_variables()
-	dofile('/home/user/.config/river-luatile/riverbed-autogen.lua')
+	dofile(os.getenv("HOME") .. '/.config/river-luatile/riverbed-autogen.lua')
 end
 
 function toggle_maximize()
