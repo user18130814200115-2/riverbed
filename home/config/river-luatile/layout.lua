@@ -125,11 +125,18 @@ function handle_layout(args)
 		local side_w = args.width / math.min(args.count, columns)
 
 		for i = 0, (args.count - 1) do
-			local side_h = args.height / math.floor((args.count + columns - 1 - i % columns) / columns)
+			local rows = math.ceil(args.count / columns)
+
+			local remainder = args.count % rows
+			local side_h = args.height / rows
+
+			if i >= (args.count - remainder) then
+				side_h = args.height / remainder
+			end
 
 			table.insert(retval, {
-				(side_w) * (i % columns) + gaps,
-				(side_h) * math.floor(i / columns) + gaps,
+				(side_w) * math.floor(i / rows) + gaps,
+				(side_h) * (i % rows) + gaps,
 				side_w - 2 * gaps,
 				side_h - 2 * gaps,
 			})
