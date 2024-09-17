@@ -132,13 +132,8 @@ if [ "$(groups | grep abuild)" ]; then
 	inform "$USER is in group abuild"
 else
 	warn "User is not in the abuild group. Adding now"
-	if [ $(which usermod) ]; then
-		$root usermod -aG abuild user
-		warn "Please re-log for the changes to take effect"
-	else
-		warn "Automatic adding failed. Please add your user manually by editing /etc/group"
-	fi
-	exit
+	$root adduser $USER abuild
+	warn "Please re-log for the changes to take effect"
 fi
 
 inform "All checks passed, start installation?"
@@ -146,5 +141,14 @@ read
 
 install_configs
 install_packages
+
+if [ "$(groups | grep seat)" ]; then
+	inform "$USER is in group seat"
+else
+	warn "User is not in the seat group. Adding now"
+	$root adduser $USER seat
+	warn "Please re-log for the changes to take effect"
+fi
+
 warn "Autostart is not enabled for security reasons. Check first if config/river/launch works, then run install -b \"home/profile\" \"$HOME/.profile\""
 inform "Install finished"
