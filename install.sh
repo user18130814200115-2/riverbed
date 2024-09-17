@@ -65,8 +65,8 @@ install_configs() {
 	inform "Installing custom scripts"
 	install -D -b -t "$HOME/.local/bin" -m 744 home/local/bin/*
 
-	inform "Installing shell profile"
-	install -b "home/profile" "$HOME/.profile"
+	#inform "Installing shell profile"
+	#install -b "home/profile" "$HOME/.profile"
 
 }
 
@@ -146,3 +146,5 @@ read
 
 install_configs
 install_packages
+warn "Autostart is not enabled for security reasons. Check first if config/river/launch works, then run install -b \"home/profile\" \"$HOME/.profile\""
+inform "Install finished"
