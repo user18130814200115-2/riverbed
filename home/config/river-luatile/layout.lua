@@ -123,13 +123,11 @@ function handle_layout(args)
 			columns = math.ceil(math.sqrt(args.count))
 		end
 		local side_w = args.width / math.min(args.count, columns)
+		local rows = math.ceil(args.count / columns)
+		local remainder = args.count % rows
+		local side_h = args.height / rows
 
 		for i = 0, (args.count - 1) do
-			local rows = math.ceil(args.count / columns)
-
-			local remainder = args.count % rows
-			local side_h = args.height / rows
-
 			if i >= (args.count - remainder) then
 				side_h = args.height / remainder
 			end
