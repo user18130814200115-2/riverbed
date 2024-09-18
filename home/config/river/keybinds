@@ -5,7 +5,7 @@ riverctl map normal Super G spawn "riverbedctl layout=grid"
 riverctl map normal Super D spawn "riverbedctl layout=dual"
 riverctl map normal Super R spawn "riverbedctl layout=runoff"
 
-riverctl map normal Super Return spawn konsole
+riverctl map normal Super Return spawn footclient
 riverctl map normal Super Space spawn 'tofi-drun | xargs riverctl spawn'
 riverctl map normal Super+Shift Space spawn 'echo | tofi | sh'
 
@@ -28,7 +28,7 @@ riverctl map normal Super+Shift f toggle-float
 riverctl map normal None Print spawn 'grimshot save area ~/Pictures/Screenshots/$(date +%d-%m-%y-%H:%M).png'
 riverctl map normal None XF86Sleep spawn 'gtklock'
 
-riverctl map normal Super P spawn "ls $HOME/.password-store | cut -d. -f1 | tofi | xargs pass otp | xargs wtype"
+riverctl map normal Super P spawn "ls $HOME/.password-store | cut -d. -f1 | tofi | xargs -I {} pass otp "{}" | xargs wtype"
 
 wobBrightness="-m | cut -d, -f4 | sed 's/%//g' > $XDG_RUNTIME_DIR/wob/brightness"
 wobVolume="&& pactl get-sink-volume @DEFAULT_SINK@ | grep -m 1 -o '[0-9][0-9]*%' | grep -m 1 -o '[0-9][0-9]*' > $XDG_RUNTIME_DIR/wob/volume"
