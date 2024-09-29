@@ -1,0 +1,27 @@
+if [ -f ~/.profile ]; then
+  . ~/.profile
+fi
+
+set --extended-glob
+set --le-predict
+
+bindkey -a '\^M' accept-prediction
+bindkey -v '\^M' accept-prediction
+bindkey -e '\^M' accept-prediction
+
+bindkey -a '\^[[27;2;13~' accept-line
+bindkey -v '\^[[27;2;13~' accept-line
+bindkey -e '\^[[27;2;13~' accept-line
+
+# avoid removing/overwriting existing files by accident
+cp() if [ -t 0 ]; then command cp -i "$@"; else command cp "$@"; fi
+mv() if [ -t 0 ]; then command mv -i "$@"; else command mv "$@"; fi
+rm() if [ -t 0 ]; then command rm -i "$@"; else command rm "$@"; fi
+
+#YASH_AFTER_CD=("$YASH_AFTER_CD" 'ls')
+YASH_PS1='$GITBRANCH\fo.${${${PWD:/~/\~}##*/}:-$PWD} \fD.\$ '
+PROMPT_COMMAND='GITBRANCH=''; [ -e .git ] && GITBRANCH="[$(git branch --show-current)] "'
+HISTFILE=~/.yash_history HISTSIZE=5000
+
+YASH_PS1S='\fk.'
+YASH_PS1P='\fkt.'
