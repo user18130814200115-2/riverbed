@@ -4,11 +4,23 @@
 	"reload_style_on_change": true,
 	"exclusive": false,
 	"mode":"dock",
-	"width": 0,
 	"spacing": 10,
 	"modules-left": ["river/tags"],
 	"modules-center": ["clock"],
 	"modules-right": ["bluetooth","pulseaudio","network","battery"],
+
+	"clock": {
+		"tooltip": true,
+		"tooltip-format": "{calendar}",
+        "calendar": {
+                    "mode"          : "year",
+                    "mode-mon-col"  : 3,
+                    "on-scroll"     : 1,
+                    "format": {
+                              "today":      "<u>{}</u>"
+                              }
+                    }
+	},
 
 	"bluetooth": {
 		"tooltip": false,
@@ -20,7 +32,7 @@
 
 	"pulseaudio": {
 		"tooltip": false,
-		"on-click":"konsole -e alsamixer",
+		"on-click":"konsole -e pulsemixer",
 		"format":"{icon}",
 		"format-muted":"",
 		"format-icons": {

@@ -1,6 +1,0 @@
-#!/bin/sh
-
-backup=COLORTERM
-unset COLORTERM
-TERM=vt102 /usr/bin/alsamixer
-COLORTERM=backup
