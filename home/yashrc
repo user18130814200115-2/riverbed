@@ -5,13 +5,13 @@ fi
 set --extended-glob
 set --le-predict
 
-bindkey -a '\^M' accept-prediction
-bindkey -v '\^M' accept-prediction
-bindkey -e '\^M' accept-prediction
+#bindkey -a '\^M' accept-prediction
+#bindkey -v '\^M' accept-prediction
+#bindkey -e '\^M' accept-prediction
 
-bindkey -a '\^[[27;2;13~' accept-line
-bindkey -v '\^[[27;2;13~' accept-line
-bindkey -e '\^[[27;2;13~' accept-line
+bindkey -a '\^[[27;2;13~' accept-prediction
+bindkey -v '\^[[27;2;13~' accept-prediction
+bindkey -e '\^[[27;2;13~' accept-prediction
 
 # avoid removing/overwriting existing files by accident
 cp() if [ -t 0 ]; then command cp -i "$@"; else command cp "$@"; fi
