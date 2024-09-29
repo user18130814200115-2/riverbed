@@ -50,9 +50,9 @@ install_configs() {
 	source_dir="./home/config/xdg-desktop-portal-wlr"
 	install -D -b -t "$config_dir/xdg-desktop-portal-wlr" $source_dir/*
 
-	inform "Installing configuration for zsh"
-	source_dir="./home/config/zsh"
-	install -D -b -t "$config_dir/zsh" $source_dir/.z*
+	inform "Installing configuration for yash"
+	source_dir="./home/config/"
+	install -D -b -t "$HOME/.yashrc" $source_dir/yashrc
 
 	inform "Installing configuration for libinput-gestures"
 	source_dir="./home/config"
