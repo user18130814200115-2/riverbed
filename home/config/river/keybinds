@@ -30,8 +30,8 @@ riverctl map normal None XF86Sleep spawn 'gtklock'
 
 riverctl map normal Super P spawn "ls $HOME/.password-store | cut -d. -f1 | tofi | xargs -I {} pass otp "{}" | xargs wtype"
 
-wobBrightness="-m | cut -d, -f4 | sed 's/%//g' > $XDG_RUNTIME_DIR/wob/brightness"
-wobVolume="&& pactl get-sink-volume @DEFAULT_SINK@ | grep -m 1 -o '[0-9][0-9]*%' | grep -m 1 -o '[0-9][0-9]*' > $XDG_RUNTIME_DIR/wob/volume"
+wobBrightness="-m | cut -d, -f4 | sed 's/%//g' > $XDG_RUNTIME_DIR/wob"
+wobVolume="&& pactl get-sink-volume @DEFAULT_SINK@ | grep -m 1 -o '[0-9][0-9]*%' | grep -m 1 -o '[0-9][0-9]*' > $XDG_RUNTIME_DIR/wob"
 
 for mode in normal locked
 do
