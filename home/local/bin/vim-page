@@ -1,0 +1,3 @@
+#!/bin/sh
+
+vim -R -c 'silent %s/.//g' -c 'silent set nowrap nospell syntax=man' -c 'silent cnoremap q q!' -c 'norm gg' "$@"
