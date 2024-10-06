@@ -107,6 +107,9 @@ border-color = ${border_color}ff
 title-color = ${text_color}ff
 summary-color = ${text_color}ff
 body-color = ${text_color}ff
+notification-margin = ${gaps}
+padding-vertical = ${padding}
+padding-horizontal = ${padding}
 #END
 $(tail -n +13 $file)\
 " > $file
@@ -191,6 +194,7 @@ defaults() {
 	# Set sane default rules
 	riverctl rule-add -app-id popup float
 	riverctl rule-add -app-id "Gimp*" no-float
+	riverctl rule-add -app-id  xdg-desktop-portal-lxqt float
 	riverctl default-attach-mode bottom
 	riverctl default-layout luatile
 
@@ -204,7 +208,7 @@ customs() {
 	# Apply custom user rules
 	cat "$exec_location/custom" | while read line
 	do
-		[ -z "$line" ] || riverctl $line
+		[ -z "$line" ] ||  ([ "${line#\#} == ${line}" ] && echo "riverctl $line" | sh)
 	done
 } 
 
@@ -251,4 +255,3 @@ tail -f -s 0 "$XDG_RUNTIME_DIR/riverbed" | while read line; do
 	internal_settings &
 	external_settings &
 done
-
