@@ -24,6 +24,8 @@
 
 	"bluetooth": {
 		"tooltip": false,
+		"on-click":"bluetoothctl show | grep 'PowerState: off' && bluetoothctl power on  || bluetoothctl  power off",
+		"on-click-right":"tofi-bluetooth",
 		"format":"",
 		"format-off":"󰂲",
 		"format-on":"",
@@ -32,7 +34,7 @@
 
 	"pulseaudio": {
 		"tooltip": false,
-		"on-click":"konsole -e pulsemixer",
+		"on-click":"foot pulsemixer",
 		"format":"{icon}",
 		"format-muted":"",
 		"format-icons": {
@@ -51,7 +53,7 @@
 
 	"network": {
 		"tooltip": false,
-		"on-click":"konsole -e nmtui",
+		"on-click":"foot nmtui",
 		"format-wifi":" {icon}",
 		"format-ethernet":" ",
 		"format-disconnected":"󰌙",
