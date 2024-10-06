@@ -1,0 +1,30 @@
+#!/bin/sh
+
+socket="$XDG_RUNTIME_DIR/bluemen"
+
+rm /tmp/bluetooth
+rm "$socket"
+mkfifo "$socket"
+tail -f "$socket" | bluetoothctl & 
+pid=$!
+
+echo "power on" > "$socket"
+(sleep 2 && echo "scan on" > "$socket") &
+
+while [ "$(cat /tmp/bluetooth)" = '' ]; do
+	devices=$(bluetoothctl devices)
+	if [ "$devices" != "$available" ]; then
+		available="$devices"
+		killall tofi
+		printf "%s" "$devices" | cut -d\  -f3- | tofi > /tmp/bluetooth &
+	fi
+done
+
+choice=$(printf "%s" "$devices" | grep "$(cat /tmp/bluetooth)" | cut -d\  -f2)
+
+bluetoothctl devices Paired | grep "$choice" || bluetoothctl pair "$choice" | grep "^[^[]" | xargs -I {} notify-send "Bluetooth" "{}"
+bluetoothctl connect "$choice" | grep "^[^[]" | xargs -I {} notify-send "Bluetooth" "{}"
+
+echo "exit" > $socket
+rm "$socket"
+rm /tmp/bluetooth
