@@ -1,5 +1,6 @@
 dbus-x11
 font-jetbrains-mono-nerd
+gsettings-desktop-schemas
 river
 mkrundir
 waybar
