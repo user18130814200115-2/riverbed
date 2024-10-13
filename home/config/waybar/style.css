@@ -1,16 +1,5 @@
 @import url("riverbed-autogen.css");
 
-* {
-	all: unset;
-	font-family: JetBrainsMono Nerd Font;
-}
-
-
-window#waybar {
-	background: transparent;
-	color: black;
-}
-
 box:not(.modules-left):not(.modules-right):not(.modules-center):not(#tags){
 	border-style: solid;
 }
@@ -32,12 +21,21 @@ box:not(.modules-left):not(.modules-right):not(.modules-center):not(#tags){
 	color: black
 }
 
-#tags button:hover, #pulseaudio:hover, #network:hover {
-	color: grey
+#tags button.urgent {
+	animation-name: blink;
+	animation-duration: 1s;
+	animation-timing-function: steps(25);
+	animation-iteration-count: 10;
+	animation-direction: alternate;
 }
 
-#bluetooth.off {
-	color: grey;
+#tags button:hover,
+#pulseaudio:hover,
+#network:hover,
+#tags button.occupied:not(.focused),
+#bluetooth.off,
+#bluetooth:hover {
+	color: grey
 }
 
 #battery.warning:not(.charging) {

@@ -4,15 +4,17 @@ main_ratio=0.55
 bar_height=48
 border_size=2
 
-background_color=eeeeee
+background_color=808080
 window_color=ffffff
 border_color=000000
-border_color_inactive=ffffff
+border_color_inactive=808080
 text_color=000000
+font="DroidSansM Nerd Font"
+monofont="DroidSansM Nerd Font Mono"
 
 cursor_theme='capitaine-cursors-dark'
 background="$HOME/Pictures/background-forest-gray.jpg"
 
 layout=runoff
 columns=3
-dynamic_columns='true'
+dynamic_columns=true
