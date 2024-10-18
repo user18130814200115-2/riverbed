@@ -203,7 +203,7 @@ class RiverConfig:
 		self.display.roundtrip()
 
 	def init(self):
-		self.river_ctl('declare_mode', 'tab')
+		self.river_ctl('declare-mode', 'tab')
 		self.display.dispatch(block=True)
 		self.display.roundtrip()
 
