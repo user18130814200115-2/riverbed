@@ -284,12 +284,13 @@ if __name__ == '__main__':
 		pass
 	rc = RiverConfig()
 	rc.init()
-	with open(coms) as fifo:
-		while True:
+	while True:
+		with open(coms) as fifo:
 			select.select([fifo],[],[fifo])
 			for line in fifo:
 				print(line[:-1])
 				eval(line[:-1])
+		time.sleep(0.1)
 
 	rc.clean_up()
 
