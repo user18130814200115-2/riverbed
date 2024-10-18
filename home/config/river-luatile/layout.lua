@@ -68,7 +68,7 @@ function handle_layout(args)
 	end
 	if overview then
 
-		local side_w = args.width / math.min(args.count, 4) - gaps * 2
+		local side_w = args.width / 4 - gaps * 2
 		local y = (args.height - side_w) / 2
 
 		if (offset - 1) * -1 == args.count then
