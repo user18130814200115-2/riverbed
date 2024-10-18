@@ -9,6 +9,7 @@ bar_height = 48
 layout = 'runoff'
 columns = 3
 dynamic_columns = true
+offset = 0
 
 
 function update_variables()
@@ -27,6 +28,19 @@ function set_layout(input)
 	if input ~= nil then
 		layout = input
 	end
+end
+
+function increase_offset()
+	offset = offset + 1
+end
+
+
+function decrease_offset()
+	offset = offset - 1
+end
+
+function set_offset(number)
+	offset = number
 end
 
 update_variables()
@@ -53,18 +67,23 @@ function handle_layout(args)
 		return retval
 	end
 	if overview then
-		local columns = math.ceil(math.sqrt(args.count))
-		local gaps = gaps * 5
-		local side_w = args.width / math.min(args.count, columns) - gaps * 2
+
+		local side_w = args.width / math.min(args.count, 4) - gaps * 2
+		local y = (args.height - side_w) / 2
+
+		if (offset - 1) * -1 == args.count then
+			offset = 1
+		end
+		if offset > 1 then
+			offset = args.count * -1 + 2
+		end
 
 		for i = 0, (args.count - 1) do
-			local side_h = args.height / math.floor((args.count + columns - 1 - i % columns) / columns) - gaps * 2
-
 			table.insert(retval, {
-				(2 * gaps + side_w) * (i % columns) + gaps,
-				(2 * gaps + side_h) * math.floor(i / columns) + gaps,
+				(2 * gaps + side_w) * (i + offset) + gaps + side_w / 2,
+				y,
 				side_w,
-				side_h,
+				side_w,
 			})
 		end
 		return retval

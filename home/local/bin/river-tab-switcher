@@ -1,0 +1,295 @@
+#!/usr/bin/env python3
+import sys
+import os
+import numpy
+import time
+import select
+
+from pywayland.client import Display
+from pywayland.protocol.wayland import WlOutput
+from pywayland.protocol.wayland import WlSeat
+try:
+	from pywayland.protocol.river_control_unstable_v1 import ZriverControlV1
+	from pywayland.protocol.river_status_unstable_v1 import ZriverStatusManagerV1
+except ModuleNotFoundError:
+	ERROR_TEXT = ('''
+  Your pywayland package does not have bindings for river-control-unstable-v1
+  and/or river-status-unstable-v1.
+  These bindings can be generated with the following command:
+
+  python3 -m pywayland.scanner -i /usr/share/wayland/wayland.xml '''
+				  '/usr/share/river-protocols/river-control-unstable-v1.xml '
+				  '''/usr/share/river-protocols/river-status-unstable-v1.xml
+
+  Adjust the path of /usr/share/river-protocols/ as approriate for your '''
+				  'installation.')
+
+	print(ERROR_TEXT)
+	sys.exit()
+
+STATUS_MANAGER = None
+CONTROL = None
+
+OUTPUTS = []
+SEAT = None
+
+class Output(object):
+	def __init__(self):
+		self.wl_output = None
+		self.focused_tags = None
+		self.view_tags = None
+		self.status = None
+
+	def destroy(self):
+		if self.wl_output is not None:
+			self.wl_output.destroy()
+		if self.status is not None:
+			self.status.destroy()
+
+	def configure(self):
+		self.status = STATUS_MANAGER.get_river_output_status(self.wl_output)
+		self.status.user_data = self
+		self.status.dispatcher["focused_tags"] = self.handle_focused_tags
+		self.status.dispatcher["view_tags"] = self.handle_view_tags
+
+	def handle_focused_tags(self, output_status, tags):
+		self.focused_tags = tags
+
+	def handle_view_tags(self, output_status, tags):
+		self.view_tags = tags
+
+
+class Seat(object):
+	def __init__(self):
+		self.wl_seat = None
+		self.status = None
+		self.focused_output = None
+
+	def destroy(self):
+		if self.wl_seat is not None:
+			self.wl_seat.destroy()
+
+		if self.status is not None:
+			self.status.destroy()
+
+	def configure(self):
+		self.status = STATUS_MANAGER.get_river_seat_status(self.wl_seat)
+		self.status.user_data = self
+		self.status.dispatcher["focused_output"] = self.handle_focused_output
+
+	def handle_focused_output(self, _, wl_output):
+		for output in OUTPUTS:
+			if output.wl_output == wl_output:
+				self.focused_output = output
+
+
+def registry_handle_global(registry, id, interface, version):
+	global STATUS_MANAGER
+	global CONTROL
+	global SEAT
+
+	if interface == 'zriver_status_manager_v1':
+		STATUS_MANAGER = registry.bind(id, ZriverStatusManagerV1, version)
+	elif interface == 'zriver_control_v1':
+		CONTROL = registry.bind(id, ZriverControlV1, version)
+	elif interface == 'wl_output':
+		output = Output()
+		output.wl_output = registry.bind(id, WlOutput, version)
+		OUTPUTS.append(output)
+	elif interface == 'wl_seat':
+		# We only care about the first seat
+		if SEAT is None:
+			SEAT = Seat()
+			SEAT.wl_seat = registry.bind(id, WlSeat, version)
+
+class RiverConfig:
+	def __init__(self):
+		self.display = Display()
+		self.display.connect()
+
+		self.registry = self.display.get_registry()
+		self.registry.dispatcher["global"] = registry_handle_global
+
+		self.view_tags = None
+		self.local_index = None
+		self.global_index = None
+
+		self.display.dispatch(block=True)
+		self.display.roundtrip()
+
+		if STATUS_MANAGER is None:
+			print("Failed to bind river status manager")
+			return
+
+		if CONTROL is None:
+			print("Failed to bind river control")
+			return
+
+		# Configuring all outputs, even the ones we do not care about,
+		# should be faster than first waiting for river to advertise the
+		# focused output of the SEAT.
+		for output in OUTPUTS:
+			output.configure()
+
+		SEAT.configure()
+
+		self.display.dispatch(block=True)
+		self.display.roundtrip()
+
+	def clean_up(self):
+		#self.display.dispatch(block=True)
+		#self.display.roundtrip()
+
+		SEAT.destroy()
+		for output in OUTPUTS:
+			output.destroy()
+
+		if STATUS_MANAGER is not None:
+			STATUS_MANAGER.destroy()
+
+		if CONTROL is not None:
+			CONTROL.destroy()
+
+		self.display.disconnect()
+
+	def river_ctl(self,*args):
+		for arg in args:
+			CONTROL.add_argument(arg)
+
+		CONTROL.run_command(SEAT.wl_seat)
+
+	def river_map(self, *args, map_arg=None, mode='normal'):
+		# map_arg: one of -release, -repeat
+		modifiers=args[0]
+		key = args[1]
+
+		CONTROL.add_argument('unmap')
+		CONTROL.add_argument(mode)
+		CONTROL.add_argument(modifiers)
+		CONTROL.add_argument(key)
+		CONTROL.run_command(SEAT.wl_seat)
+
+		CONTROL.add_argument('map')
+		if map_arg:
+			CONTROL.add_argument(map_arg)
+
+		CONTROL.add_argument(mode)
+		CONTROL.add_argument(modifiers)
+		CONTROL.add_argument(key)
+		for arg in args[2:]:
+			CONTROL.add_argument(arg)
+
+		CONTROL.run_command(SEAT.wl_seat)
+
+	def get_data(self):
+		self.river_ctl('toggle-view-tags', '2048')
+
+		self.display.roundtrip()
+		self.display.dispatch(block=True)
+
+		byte_sequence = OUTPUTS[0].view_tags
+		tags = list(map(factors,numpy.frombuffer(byte_sequence, dtype=numpy.uint32)))
+		for index, view in enumerate(tags):
+			if 2048 in view:
+				self.view_tags = view[0:-1]
+				self.global_index = index
+
+		for index, view in enumerate([vt for vt in tags if vt[0] in self.view_tags]):
+			if 2048 in view:
+				self.local_index = index
+
+		self.river_ctl( 'toggle-view-tags', '2048')
+
+		self.display.roundtrip()
+
+	def init(self):
+		self.river_ctl('declare_mode', 'tab')
+		self.display.dispatch(block=True)
+		self.display.roundtrip()
+
+		self.river_map('Super', 'Tab', 'spawn',			'echo "rc.enter()" > ' + coms)
+		self.river_map('Super', 'Tab', 'spawn',			'echo "rc.next()" > ' + coms, mode='tab')
+		self.river_map('Super+Shift', 'Tab', 'spawn',	'echo "rc.previous()" > ' + coms, mode='tab')
+		self.river_map('Mod4', 'SUPER_L', 'spawn', 		'echo "rc.leave()" > ' + coms, map_arg='-release', mode='tab')
+		self.river_map('Super', 'Q', 'spawn',			'echo "rc.close()" > ' + coms, mode='tab')
+
+		self.display.dispatch(block=True)
+		self.display.roundtrip()
+
+	def enter(self):
+		self.get_data()
+
+		self.river_ctl('enter-mode', 'tab')
+		self.river_ctl('focus-follows-cursor', 'disabled')
+		self.river_ctl('set-focused-tags', all_tags)
+		self.river_ctl('send-layout-cmd', 'luatile', 'set_offset(' + str((self.global_index - 1) * -1) + ')')
+		self.river_ctl('send-layout-cmd', 'luatile', 'toggle_overview()')
+
+		self.display.dispatch(block=True)
+		self.display.roundtrip()
+	
+	def leave(self):
+		self.get_data()
+
+		self.river_ctl('set-focused-tags', str(sum(self.view_tags)))
+		self.river_ctl('enter-mode', 'normal')
+		self.river_ctl('focus-follows-cursor', 'normal')
+		self.river_ctl('send-layout-cmd', 'luatile', 'toggle_overview()')
+		
+		#self.display.dispatch(block=True)
+		self.display.roundtrip()
+	
+	def next(self):
+		self.river_ctl('send-layout-cmd', 'luatile', 'decrease_offset()')
+		self.river_ctl('focus-view', 'next')
+
+		#self.display.dispatch(block=True)
+		self.display.roundtrip()
+
+	def previous(self):
+		self.river_ctl('send-layout-cmd', 'luatile', 'increase_offset()')
+		self.river_ctl('focus-view', 'previous')
+		
+		#self.display.dispatch(block=True)
+		self.display.roundtrip()
+	
+	def close(self):
+		self.river_ctl('close')
+		self.river_ctl('focus-view', 'next')
+		
+		self.display.roundtrip()
+		
+
+def factors(number):
+	number = int(number)
+	factors = []
+	power = 0
+	
+	while number > 0:
+		if number & 1:  # Check if the least significant bit is 1
+			factors.append(2 ** power)
+		number >>= 1  # Right shift to process the next bit
+		power += 1
+	
+	return factors
+
+coms = os.path.expandvars('$XDG_RUNTIME_DIR/river-tab-switcher')
+all_tags=f'{(1<<32)-1}'
+cached_time=0
+
+if __name__ == '__main__':
+	try:
+		os.mkfifo(coms)
+	except:
+		pass
+	rc = RiverConfig()
+	rc.init()
+	with open(coms) as fifo:
+		while True:
+			select.select([fifo],[],[fifo])
+			for line in fifo:
+				print(line[:-1])
+				eval(line[:-1])
+
+	rc.clean_up()
+
