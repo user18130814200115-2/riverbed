@@ -34,7 +34,7 @@ These are the various functions of riverbedctl:
   fnott, tofi, and luatile
 
 
-### Programs
+## Programs
 
 Riverbed uses the following programs:
 
@@ -52,6 +52,38 @@ please check `etc/apk/world` for a full list.
 I personally use the KDE suite of applications, but this can easily be
 substituted by with GNOME or DE agnostic applications.
 
+### Packages
+
+Most programs used in this setup are available in the main alpine repositories,
+though some are currently in testing. Other still are not available at all, this
+repository contains custom `APKBUILD` files for these programs.
+
+### Manual
+
+Currently manual intervention is required for getting the window switcher to
+work. This involves installing `pywayland' possibly through pip, and installing
+the river wayland protocols.
+
+The process is more or less like this
+```
+apk add pip gcc wget
+pip install pywayland
+
+wget https://raw.githubusercontent.com/riverwm/river/refs/heads/master/protocol/river-control-unstable-v1.xml
+wget https://raw.githubusercontent.com/riverwm/river/refs/heads/master/protocol/river-status-unstable-v1.xml
+
+python3 -m pywayland.scanner -i /usr/share/wayland/wayland.xml river-control-unstable-v1.xml river-status-unstable-v1.xml
+apk del pip gcc wget
+rm river-control-unstable-v1.xml river-status-unstable-v1.xml
+'''
+
+You might get an error from pip about python being externall managed. This can
+be worked around by removing /usr/lib/python3.12/EXTERNALLY-MANAGED.
+
+Once I find a more elegant way of installing this I will add it to the install
+script.
+
+
 ## Alpine-specific
 
 This setup is intended for use on Alpine Linux and its derivatives, I currently
@@ -63,11 +95,6 @@ If you are installing on a different distribution, you can look at
 section will outline the other alpine-specific bits of this setup so that you
 can adjust it for your needs.
 
-### Packages
-
-Most programs used in this setup are available in the main alpine repositories,
-though some are currently in testing. Other still are not available at all, this
-repository contains custom `APKBUILD` files for these programs.
 
 ### Elogind/systemd
 
