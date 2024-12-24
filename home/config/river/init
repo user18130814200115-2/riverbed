@@ -2,14 +2,42 @@
 
 exec_location="$HOME/.config/river"
 
-external_settings() {
+# Default configuration
 
+gaps=5
+padding=10
+main_ratio=0.60
+bar_height=48
+border_size=2
+
+background_color=808080
+window_color=ffffff
+border_color=000000
+border_color_inactive=808080
+text_color=000000
+font="DroidSansM Nerd Font"
+monofont="DroidSansM Nerd Font Mono"
+
+cursor_theme='capitaine-cursors-dark'
+background=""
+
+layout=runoff
+columns=3
+dynamic_columns=true
+
+# End default settings
+
+external_settings() {
 	# Calculate derived settings
 	display_height=$(wlr-randr --json | jq '.[].modes.[].height')
 	display_width=$(wlr-randr --json | jq '.[].modes.[].width')
 
 
 	if [ "$layout" = 'runoff' ]; then
+		bar_width=$(echo "($display_width - (3 * $gaps)) * (1 - $main_ratio)" | bc -l | sed 's/\..*$//g')
+		bar_left=$(($display_width - $bar_width - $gaps))
+		bar_right=$gaps
+	elif [ "$layout" = 'writing' ]; then
 		bar_width=$(echo "($display_width - (3 * $gaps)) * (1 - $main_ratio)" | bc -l | sed 's/\..*$//g')
 		bar_left=$(($display_width - $bar_width - $gaps))
 		bar_right=$gaps
@@ -93,8 +121,10 @@ margin=-$bar_height $bar_right 0 0
 height=$bar_height
 width=$bar_width
 bar_padding=$(($border_size - 4))
+border_size=0
+anchor=top right
 ;END
-$(tail -n +7 $file)\
+$(tail -n +9 $file)\
 " > $file
 setup_deamon &
 
@@ -204,6 +234,8 @@ defaults() {
 	riverctl rule-add -app-id popup float
 	riverctl rule-add -app-id "Gimp*" no-float
 	riverctl rule-add -app-id  xdg-desktop-portal-lxqt float
+	riverctl rule-add -app-id "*" ssd
+	riverctl rule-add -app-id  soffice -title Open float
 	riverctl default-attach-mode bottom
 	riverctl default-layout luatile
 
@@ -260,7 +292,9 @@ autostart
 mkfifo "$XDG_RUNTIME_DIR/riverbed"
 tail -f -s 0 "$XDG_RUNTIME_DIR/riverbed" | while read line; do
 	echo $line
-	eval ${line}
-	internal_settings &
-	external_settings &
+	{
+		eval "${line}"
+		internal_settings
+		external_settings
+	} &
 done

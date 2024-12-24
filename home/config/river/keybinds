@@ -4,9 +4,10 @@ riverctl map normal Super+Shift R spawn "riverbedctl reload_configs"
 riverctl map normal Super G spawn "riverbedctl layout=grid"
 riverctl map normal Super D spawn "riverbedctl layout=dual"
 riverctl map normal Super R spawn "riverbedctl layout=runoff"
+riverctl map normal Super W spawn "riverbedctl main_ratio=0.69\;layout=writing"
 
 riverctl map normal Super Return spawn footclient
-riverctl map normal Super Space spawn 'tofi-drun | xargs riverctl spawn'
+riverctl map normal Super Space spawn 'tofi-drun | xargs -I {} riverctl spawn "{}"'
 riverctl map normal Super+Shift Space spawn 'echo | tofi | sh'
 
 riverctl map normal Super+Shift q close
@@ -19,10 +20,11 @@ riverctl map normal Super Down focus-view next
 riverctl map normal Super Up focus-view previous
 
 riverctl map-pointer normal Super BTN_LEFT move-view
-riverctl map-pointer normal Super BTN_RIGHT resize-view
+riverctl map-pointer normal SuperBTN_RIGHT resize-view
+riverctl map-pointer normal Super+Shift BTN_LEFT resize-view
 
-riverctl map normal Super F send-layout-cmd luatile 'toggle_maximize()'
-riverctl map normal Super+Alt F toggle-fullscreen
+riverctl map normal Super F toggle-fullscreen
+riverctl map normal None F11 toggle-fullscreen
 riverctl map normal Super+Shift f toggle-float
 
 riverctl map normal None Print spawn 'grimshot save area ~/Pictures/Screenshots/$(date +%d-%m-%y-%H:%M).png'

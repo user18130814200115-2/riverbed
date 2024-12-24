@@ -1,5 +1,9 @@
 @import url("riverbed-autogen.css");
 
+* {
+	font-size: 13px;
+}
+
 box:not(.modules-left):not(.modules-right):not(.modules-center):not(#tags){
 	border-style: solid;
 }

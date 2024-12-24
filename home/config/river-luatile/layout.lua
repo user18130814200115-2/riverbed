@@ -20,8 +20,11 @@ function toggle_maximize()
 	maximize = not maximize
 end
 
-function toggle_overview()
-	overview = not overview
+function enter_overview()
+	overview = true
+end
+function leave_overview()
+	overview = false
 end
 
 function set_layout(input)
@@ -106,6 +109,33 @@ function handle_layout(args)
 				gaps + i * (side_h + gaps),
 				side_w,
 				side_h,
+			})
+		end
+	elseif layout == 'writing' then
+		local main_w = (args.width - gaps * 3) * main_ratio
+		local side_w = (args.width - gaps * 3) - main_w
+		local main_h = args.height + bar_height - gaps * 2
+		local side_h = (args.height - gaps * 2 - 100) / (args.count - 2) - gaps
+		table.insert(retval, {
+			gaps,
+			gaps - bar_height,
+			main_w,
+			main_h,
+		})
+		if args.count > 1 then
+			for i = 0, (args.count - 3) do
+				table.insert(retval, {
+					main_w + gaps * 2,
+					gaps + i * (side_h + gaps),
+					side_w,
+					side_h,
+				})
+			end
+			table.insert(retval, {
+				main_w + gaps * 2,
+				main_h - 100 - bar_height + gaps,
+				side_w,
+				100,
 			})
 		end
 	elseif layout == 'dual' then

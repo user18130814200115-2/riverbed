@@ -1,4 +1,4 @@
-hide-cursor when-typing enabled
+#hide-cursor when-typing enabled
 focus-follows-cursor normal
 set-cursor-warp on-focus-change
 
@@ -7,5 +7,10 @@ input pointer-9610-30-Pine64_Pinebook_Pro_Touchpad tap enabled
 input pointer-9610-30-Pine64_Pinebook_Pro_Touchpad natural-scroll enabled
 keyboard-layout -options compose:caps us
 
-spawn 'gsettings set org.gnome.desktop.interface icon-theme breeze'
-spawn 'gsettings set org.gnome.desktop.interface icon-theme Breeze'
+#spawn "gsettings set org.gnome.desktop.interface icon-theme breeze"
+#sapawn "gsettings set org.gnome.desktop.interface icon-theme Breeze"
+
+rule-add -title "pygame window" float
+rule-add -app-id "org.kde.kalk" float
+rule-add -app-id "org.kde.kalk" position 1612 623
+

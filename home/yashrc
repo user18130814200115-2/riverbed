@@ -1,13 +1,10 @@
-if [ -f ~/.profile ]; then
-  . ~/.profile
-fi
+#!/bin/sh
+#if [ -f ~/.profile ]; then
+#  . "$HOME/.profile"
+#fi
 
 set --extended-glob
 set --le-predict
-
-#bindkey -a '\^M' accept-prediction
-#bindkey -v '\^M' accept-prediction
-#bindkey -e '\^M' accept-prediction
 
 bindkey -a '\^[[27;2;13~' accept-prediction
 bindkey -v '\^[[27;2;13~' accept-prediction
@@ -18,10 +15,72 @@ cp() if [ -t 0 ]; then command cp -i "$@"; else command cp "$@"; fi
 mv() if [ -t 0 ]; then command mv -i "$@"; else command mv "$@"; fi
 rm() if [ -t 0 ]; then command rm -i "$@"; else command rm "$@"; fi
 
-#YASH_AFTER_CD=("$YASH_AFTER_CD" 'ls')
+YASH_AFTER_CD=("$YASH_AFTER_CD" 'ls')
 YASH_PS1='${GITBRANCH:+[$GITBRANCH] }\fo.${${${PWD:/~/\~}##*/}:-$PWD} \fD.\$ '
-PROMPT_COMMAND='GITBRANCH="$(git branch --show-current 2> /dev/null)"'
-HISTFILE=~/.yash_history HISTSIZE=5000
+PROMPT_COMMAND='GITBRANCH="$(git branch --show-current 2> /dev/null)"; \
+fc -l -1 | cut -f 2- >> "$CHISTFILE"; uniq $CHISTFILE $CHISTFILE.$$; mv -f $CHISTFILE.$$ $CHISTFILE'
+
+#HISTFILE=~/.yash_history
+#HISTSIZE=5000
+HISTRMDUP=1
+
+CHISTFILE=~/.yash_history_raw
 
 YASH_PS1S='\fk.'
 YASH_PS1P='\fkt.'
+
+history -r "$CHISTFILE"
+
+nnn ()
+{
+    # Block nesting of nnn in subshells
+    [ "${NNNLVL:-0}" -eq 0 ] || {
+        echo "nnn is already running"
+        return
+    }
+
+    export NNN_TMPFILE="${XDG_CONFIG_HOME:-$HOME/.config}/nnn/.lastd"
+
+    command nnn "$@"
+
+    [ ! -f "$NNN_TMPFILE" ] || {
+        . "$NNN_TMPFILE"
+        rm -f -- "$NNN_TMPFILE" > /dev/null
+    }
+}
+
+if [ $TERM != 'foot' ]; then
+#	echo -en "\e]P0ffffff"
+#
+#	echo -en "\e]P1b21818"
+#	echo -en "\e]P218b218"
+#	echo -en "\e]P3b26818"
+#	echo -en "\e]P41818b2"
+#	echo -en "\e]P5b218b2"
+#	echo -en "\e]P618b2b2"
+#
+#
+#	echo -en "\e]P7000000"
+#
+#	echo -en "\e]P8eeeeee"
+#
+#	echo -en "\e]P9ff5454"
+#	echo -en "\e]Pa54ff54"
+#	echo -en "\e]Pbffff54"
+#	echo -en "\e]Pc5454ff"
+#	echo -en "\e]Pdff54ff"
+#	echo -en "\e]Pe54ffff"
+#
+#	echo -en "\e]PF444444"
+#
+#	clear
+
+#	YASH_PS1='${GITBRANCH:+[$GITBRANCH] }${$(date +"[%D %H:%M]")} (${$(cat  /sys/class/power_supply/cw2015-battery/capacity)}%) \fo.${${${PWD:/~/\~}##*/}:-$PWD} \fD.\$ '
+	YASH_PS1S=''
+	YASH_PS1P='\fu.'
+	bindkey -a '\^A' accept-prediction
+	bindkey -v '\^A' accept-prediction
+	bindkey -e '\^A' accept-prediction
+fi
+
+
