@@ -6,15 +6,44 @@ environment.
 
 ## Installation
 
-See [INSTALL.md](INSTALL.md).
+See [INSTALL.md](INSTALL.md) for instructions on Alpine and NixOs.
 
 ## Usage
 
 Riverbed is configured through the use of a few configuration files as well as
 the `riverbedctl` command. The configuration files are located at `config/river`
-and are named `variables`, `keybinds`, `autostart` and `custom`. The purpose of
-each should be clear by the name. Important to note is that `keybinds` and
+and are named `variables`, `keybinds, `autostart`, and `custom`. The purpose of
+each should be clear by the name. Important to note is that`keybinds` and
 `custom` are both scripts allowing for greater flexibility.
+
+### Variables
+
+The following variables can be set, below are their default values:
+
+```
+	gaps=5
+	padding=10
+	main_ratio=0.60
+	bar_height=48
+	border_size=2
+
+	background_color=808080
+	window_color=ffffff
+	border_color=000000
+	border_color_inactive=808080
+	text_color=000000
+	font="DroidSansM Nerd Font"
+	monofont="DroidSansM Nerd Font Mono"
+
+	cursor_theme='capitaine-cursors-dark'
+	background=""
+
+	layout=runoff
+	columns=3
+	dynamic_columns=true
+```
+
+### Riverbedctl
 
 `riverbedctl` is the command line utility used for updating aspects of the
 desktop such as the current layout, gaps, border-colors, etcetera. Unlike
@@ -42,70 +71,16 @@ Riverbed uses the following programs:
 |----------------|--------------------------|
 | river | Compositor |
 | river-luatile | Layout Manager |
-| way bar | Status bar |
+| waybar | Status bar |
 | tofi | Launcher, Polkit-agent * pinentry |
 | fnott | Notifications |
+| wob | Volume and Brightness OSD |
 
 Riverbed does rely on other programs and libraries to be present on your system,
-please check `etc/apk/world` for a full list.
+please check `etc/apk/world` for a full list. 
 
 I personally use the KDE suite of applications, but this can easily be
 substituted by with GNOME or DE agnostic applications.
-
-### Packages
-
-Most programs used in this setup are available in the main alpine repositories,
-though some are currently in testing. Other still are not available at all, this
-repository contains custom `APKBUILD` files for these programs.
-
-### Manual
-
-Currently manual intervention is required for getting the window switcher to
-work. This involves installing `pywayland' possibly through pip, and installing
-the river wayland protocols.
-
-The process is more or less like this
-```
-apk add pip gcc wget
-pip install pywayland
-
-wget https://raw.githubusercontent.com/riverwm/river/refs/heads/master/protocol/river-control-unstable-v1.xml
-wget https://raw.githubusercontent.com/riverwm/river/refs/heads/master/protocol/river-status-unstable-v1.xml
-
-python3 -m pywayland.scanner -i /usr/share/wayland/wayland.xml river-control-unstable-v1.xml river-status-unstable-v1.xml
-apk del pip gcc wget
-rm river-control-unstable-v1.xml river-status-unstable-v1.xml
-'''
-
-You might get an error from pip about python being externall managed. This can
-be worked around by removing /usr/lib/python3.12/EXTERNALLY-MANAGED.
-
-Once I find a more elegant way of installing this I will add it to the install
-script.
-
-
-## Alpine-specific
-
-This setup is intended for use on Alpine Linux and its derivatives, I currently
-have no interest in porting it to other distributions. That being said, other
-than the files in `etc/apk`, everything should be cross-compatible.
-
-If you are installing on a different distribution, you can look at
-`etc/apk/world` for a list of programs that you would need to install. This
-section will outline the other alpine-specific bits of this setup so that you
-can adjust it for your needs.
-
-
-### Elogind/systemd
-
-This setup does not rely on `systemd` or `elogind`. Therefore, in order to keep
-`polkit` and `dbus` working, I launch river with a combination of `consolekit`
-and `dbus-launch`. If you use a `systemd` distro or use `elogind`, this may be
-different.
-
-For the same reason, I use `seatd` for seat management. For this to work, the
-`seatd` system service must be running, and the user must be part of the `seat`
-group
 
 ## Window layout
 
@@ -141,3 +116,4 @@ the number of windows increase.
 ![launcher](pictures/launcher.png)
 ![osd](pictures/osd.png)
 ![notification](pictures/notification.png)
+
