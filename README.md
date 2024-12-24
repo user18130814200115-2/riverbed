@@ -21,26 +21,26 @@ each should be clear by the name. Important to note is that`keybinds` and
 The following variables can be set, below are their default values:
 
 ```
-	gaps=5
-	padding=10
-	main_ratio=0.60
-	bar_height=48
-	border_size=2
+gaps=5
+padding=10
+main_ratio=0.60
+bar_height=48
+border_size=2
 
-	background_color=808080
-	window_color=ffffff
-	border_color=000000
-	border_color_inactive=808080
-	text_color=000000
-	font="DroidSansM Nerd Font"
-	monofont="DroidSansM Nerd Font Mono"
+background_color=808080
+window_color=ffffff
+border_color=000000
+border_color_inactive=808080
+text_color=000000
+font="DroidSansM Nerd Font"
+monofont="DroidSansM Nerd Font Mono"
 
-	cursor_theme='capitaine-cursors-dark'
-	background=""
+cursor_theme='capitaine-cursors-dark'
+background=""
 
-	layout=runoff
-	columns=3
-	dynamic_columns=true
+layout=runoff
+columns=3
+dynamic_columns=true
 ```
 
 ### Riverbedctl
