@@ -1,3 +1,9 @@
+# Migrated
+
+This repository has been migrated to
+[codeberg](https://codeberg.org/User18130814200115/riverbed). The GitHub version
+is now archived and will no-longer receive updates.
+
 # Riverbed
 
 Riverbed is a set of configuration files and programs to turn the [river
